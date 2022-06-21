@@ -1,0 +1,80 @@
+
+------------ AUTEUR
+CREATE SEQUENCE auteur_seq START WITH 1;
+
+create table auteur(
+	id_auteur Number(10) DEFAULT auteur_seq.nextval not null,
+	nom_auteur Varchar2(25),
+	prenom_auteur Varchar2(25)
+);
+
+ALTER TABLE auteur ADD (
+  CONSTRAINT auteur_pk PRIMARY KEY (id_auteur)
+);
+
+
+--------------- EDITEUR 
+
+CREATE SEQUENCE editeur_seq START WITH 1;
+
+create table editeur(
+	id_editeur Number(10) DEFAULT editeur_seq.nextval not null,
+	type_editeur Varchar2(25),
+	prenom_auteur Varchar2(25)
+);
+
+ALTER TABLE editeur ADD (
+  CONSTRAINT editeur_pk PRIMARY KEY (id_editeur)
+);
+
+----------- GENRE
+
+CREATE SEQUENCE genre_seq START WITH 1;
+
+create table genre(
+	id_genre Number(10)DEFAULT genre_seq.nextval not null,
+	libelle_genre Varchar2(25)
+);
+
+ALTER TABLE genre ADD (
+  CONSTRAINT genre_pk PRIMARY KEY (id_genre)
+);
+
+
+------ ABONNE
+
+CREATE SEQUENCE abonne_seq START WITH 1;
+
+create table abonne(
+	id_abonne  NUMBER DEFAULT abonne_seq.nextval not null ,
+	nom_abonne Varchar2(25),
+	prenom_abonne Varchar2(25),
+    username_abonne Varchar2(25),
+    password_abonne Varchar2(25),
+	adresse_abonne Varchar2(50),
+	telephone_abonne Varchar2(25),
+	date_adhesion_abonne Varchar2(25),
+	date_naissance_abonne Varchar2(25),
+    categorie_abonne Varchar2(25)
+);
+
+Alter table abonne Add PRIMARY KEY(id_abonne);
+
+----------- User
+
+CREATE SEQUENCE user_seq START WITH 1;
+
+create table users(
+	id_user  NUMBER DEFAULT user_seq.nextval not null ,
+	nom_userVarchar2(25),
+	prenom_user Varchar2(25),
+    username_userVarchar2(25),
+    password_user Varchar2(25),
+	adresse_user Varchar2(50),
+	telephone_user Varchar2(25),
+	date_adhesion_user Varchar2(25),
+	date_naissance_user Varchar2(25),
+    categorie_user Varchar2(25)
+);
+Alter table users Add PRIMARY KEY(id_user);
+

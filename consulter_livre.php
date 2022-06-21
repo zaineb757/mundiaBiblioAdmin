@@ -527,7 +527,7 @@
 				</div>
 				<?php
                     // Include config file
-                    require_once "config_anas.php";
+                    require_once "config.php";
 										
                     // Attempt select query execution
                     $sql = "SELECT * FROM livre";

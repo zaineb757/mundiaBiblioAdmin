@@ -1,3 +1,32 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    if (isset($_POST['username'])) {
+        $username = htmlentities($_POST['username']);
+        $password = htmlentities($_POST['password']);
+        $conn = oci_connect('sql2020', 'sql2020', 'XE')
+            or die("Can't connect to database server!");
+
+        $query = "SELECT username_abonne, password_abonne FROM abonne
+WHERE username_abonne=:username AND password_abonne=:password";
+        $stmt = oci_parse($conn, $query);
+        oci_bind_by_name($stmt, ':username', $username, 8);
+        oci_bind_by_name($stmt, ':password', $password, 32);
+        oci_execute($stmt);
+        list($username, $password) = oci_fetch_array($stmt, OCI_NUM);
+        if ($username != "") {
+            $_SESSION['username'] = $username;
+            echo "You've successfully logged in. ";
+            header("Location:Menu.html");
+        }
+    } else {
+       // printf("chi haja mahiyach");
+    }
+} else {
+   // printf("Welcome back, %s!", $_SESSION['username']);
+}
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +35,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Pages / Login - NiceAdmin Bootstrap Template</title>
+  <title>MUNDIAPOLIS BIBLIO</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -65,7 +94,7 @@
                   </div>
 
                   
-				  <form class="row g-3 needs-validation" novalidate >
+				  <form class="row g-3 needs-validation" novalidate method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>
@@ -91,6 +120,7 @@
                     <div class="col-12">
 					
                       <button class="btn btn-primary w-100" type="submit" value="Login">Login</button>
+					  <a href="logout.php" class="btn btn-default">Cancel</a>
                     </div>
                  
                   </form>
@@ -103,7 +133,7 @@
                 <!-- You can delete the links only if you purchased the pro version. -->
                 <!-- Licensing information: https://bootstrapmade.com/license/ -->
                 <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                Designed by <a href="https://bootstrapmade.com/">FATZA</a>
+                Designed by <a href="https://bootstrapmade.com/">FAZAS</a>
               </div>
 
             </div>

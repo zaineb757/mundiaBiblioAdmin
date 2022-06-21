@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($nom_abonne_err) && empty($prenom_abonne_err) && empty($username_abonne_err) && empty($password_abonne_err) && empty($adresse_abonne_err)  && empty($telephone_abonne_err) && empty($categorie_abonne_err) && empty($date_adhesion_err) && empty($date_naissance_err)) {
         // Prepare an insert statement
 
-        $sql = "insert into abonne(id_abonne,nom_abonne,prenom_abonne,username_abonne,password_abonne,adresse_abonne,telephone_abonne,categorie_abonne,date_adhesion,date_naissance) Values(ma_sequence_abonne.NEXTVAL,?,?,?,?,?,?,?,?,?)";
+        $sql = "insert into abonne(id_abonne,nom_abonne,prenom_abonne,username_abonne,password_abonne,adresse_abonne,telephone_abonne,categorie_abonne,date_adhesion,date_naissance) Values(abonne_seq.nextval,?,?,?,?,?,?,?,?,?)";
 
         //if($stmt = mysqli_prepare($link, $sql)){
         if ($stmt = $link->prepare($sql)) {
