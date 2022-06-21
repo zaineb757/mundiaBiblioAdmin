@@ -48,7 +48,7 @@ create table livre(
 	FOREIGN KEY(id_genre) REFERENCES genre(id_genre),
 	FOREIGN KEY(id_editeur) REFERENCES editeur(id_editeur)
 );
-
+CREATE SEQUENCE ma_sequence_pret;
 create table pret(
 	id_pret Number(10) not null,
 	date_pret DATE,
@@ -57,6 +57,7 @@ create table pret(
 	PRIMARY KEY(id_pret),
 	FOREIGN KEY(id_abonne) REFERENCES abonne(id_abonne)
 );
+alter table pret modify (id_pret NUMBER DEFAULT ma_sequence_pret.NEXTVAL);
 
 create table exemplaire (
 	id_exemplaire Number(10) not null,
