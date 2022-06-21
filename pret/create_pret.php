@@ -1,6 +1,6 @@
 <?php
-// Include config file
-require_once "config.php";
+// Include ../config file
+require_once "../config.php";
 
 // Define variables and initialize with empty values
 $id_pret = $date_pret = $date_retour = $id_abonne =  $id_livre = "";

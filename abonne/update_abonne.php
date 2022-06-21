@@ -1,6 +1,6 @@
 <?php
 // Include config file
-require_once "config.php";
+require_once "../config.php";
 
 // Define variables and initialize with empty values
 $nom_abonne = $prenom_abonne = $username_abonne = $password_abonne = $adresse_abonne = $telephone_abonne = $date_adhesion = $date_naissance = $categorie_abonne = "";

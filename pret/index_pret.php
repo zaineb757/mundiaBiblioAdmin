@@ -269,7 +269,7 @@
   </header><!-- End Header -->
 
   <?php
-  include 'sidebar1.php';
+  include '../sidebar.php';
   ?>
   <main id="main" class="main">
 
@@ -297,8 +297,8 @@
 
 
               <?php
-              // Include config file
-              require_once "config.php";
+              // Include ../config file
+              require_once "../config.php";
 
               // Attempt select query execution
               $sql = "SELECT * FROM pret";

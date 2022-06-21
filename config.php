@@ -3,8 +3,8 @@
 server with default setting (user 'root' with no password) */
 //define('DB_SERVER', 'localhost');
 define('DB_SERVER', '(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=127.0.0.1)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XE)))');
-define('DB_USERNAME', 'fatimahmich');
-define('DB_PASSWORD', 'fati123');
+define('DB_USERNAME', 'zaineb');
+define('DB_PASSWORD', 'zaineb');
 define('DB_NAME', 'XE');
 
  
@@ -20,5 +20,3 @@ $link = new PDO("oci:dbname=".DB_SERVER,DB_USERNAME,DB_PASSWORD);
 } catch (PDOException $e) {
     echo ($e->getMessage());
 }
-?>
-

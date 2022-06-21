@@ -1,8 +1,8 @@
 <?php
 // Check existence of id parameter before processing further
 if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
-    // Include config file
-    require_once "config.php";
+    // Include ../config file
+    require_once "../config.php";
 
     // Prepare a select statement
     $sql = "SELECT * FROM pret WHERE ID_PRET = ?";
