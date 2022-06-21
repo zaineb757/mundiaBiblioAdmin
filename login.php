@@ -4,11 +4,11 @@ if (!isset($_SESSION['username'])) {
     if (isset($_POST['username'])) {
         $username = htmlentities($_POST['username']);
         $password = htmlentities($_POST['password']);
-        $conn = oci_connect('sql2020', 'sql2020', 'XE')
+        $conn = oci_connect('fatimahmich', 'fati123', 'XE')
             or die("Can't connect to database server!");
 
-        $query = "SELECT username_abonne, password_abonne FROM abonne
-WHERE username_abonne=:username AND password_abonne=:password";
+        $query = "SELECT username_user, password_user FROM users
+WHERE username_user=:username AND password_user=:password";
         $stmt = oci_parse($conn, $query);
         oci_bind_by_name($stmt, ':username', $username, 8);
         oci_bind_by_name($stmt, ':password', $password, 32);
@@ -17,7 +17,11 @@ WHERE username_abonne=:username AND password_abonne=:password";
         if ($username != "") {
             $_SESSION['username'] = $username;
             echo "You've successfully logged in. ";
-            header("Location:Menu.html");
+            if ($username == "admin"){
+            header("Location:dashboard.php");
+            }else{
+              header("Location:Menu.html");
+            }
         }
     } else {
        // printf("chi haja mahiyach");

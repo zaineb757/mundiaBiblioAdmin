@@ -269,7 +269,7 @@
   </header><!-- End Header -->
 
   <?php
-  include 'sidebar1.php';
+  include '../sidebar.php';
   ?>
   <main id="main" class="main">
 

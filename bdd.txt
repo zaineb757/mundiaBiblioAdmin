@@ -66,9 +66,9 @@ CREATE SEQUENCE user_seq START WITH 1;
 
 create table users(
 	id_user  NUMBER DEFAULT user_seq.nextval not null ,
-	nom_userVarchar2(25),
+	nom_user Varchar2(25),
 	prenom_user Varchar2(25),
-    username_userVarchar2(25),
+    username_user Varchar2(25),
     password_user Varchar2(25),
 	adresse_user Varchar2(50),
 	telephone_user Varchar2(25),
