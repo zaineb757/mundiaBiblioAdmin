@@ -20,7 +20,7 @@ if (isset($_POST["id"]) && !empty($_POST["id"])) {
         //if(mysqli_stmt_execute($stmt)){
         if ($stmt->execute()) {
             // Records deleted successfully. Redirect to landing page
-            header("location: index.php");
+            header("location: index_abonne.php");
             exit();
         } else {
             echo "Oops! Something went wrong. Please try again later.";
@@ -71,7 +71,7 @@ if (isset($_POST["id"]) && !empty($_POST["id"])) {
                             <p>Vous vulez vraiment supprimer cet abonne?</p><br>
                             <p>
                                 <input type="submit" value="Oui" class="btn btn-danger">
-                                <a href="index.php" class="btn btn-default">Non</a>
+                                <a href="index_abonne.php" class="btn btn-default">Non</a>
                             </p>
                         </div>
                     </form>

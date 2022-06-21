@@ -11,8 +11,16 @@
         </li><!-- End Dashboard Nav -->
         <!--Start Abonne-->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="abonne/index.php">
+            <a class="nav-link collapsed" href="abonne/index_abonne.php">
                 <i class="bi bi-menu-button-wide"></i><span>Abonnées</span>
+            </a>
+            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+            </ul>
+        </li><!-- End Components Nav -->
+        <li class="nav-item">
+            <a href="consulter_livre.php" class="nav-link collapsed">
+                <i class="bi bi-menu-button-wide"></i><span>Livres</span>
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 

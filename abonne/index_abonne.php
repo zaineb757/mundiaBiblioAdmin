@@ -45,7 +45,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">Abonnés</span>
+        <span class="d-none d-lg-block">MundiaBibio</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -291,7 +291,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Abonnés</h5>
-              <a href="create.php" class="btn btn-success pull-right">Ajouter</a>
+              <a href="create_abonne.php" class="btn btn-success pull-right">Ajouter</a>
 
               <!-- Table with stripped rows -->
 
@@ -340,9 +340,9 @@
                     echo "<td>" . $row['CATEGORIE_ABONNE'] . "</td>";
 
                     echo "<td>";
-                    echo "<a href='read.php?id=" . $row['ID_ABONNE'] . "' title='View Record' data-toggle='tooltip'><i class='bi bi-eye'></i></a>";
-                    echo "<a href='update.php?id=" . $row['ID_ABONNE'] . "' title='Update Record' data-toggle='tooltip'> <i class='bi bi-pen-fill'></i></a>";
-                    echo "<a href='delete.php?id=" . $row['ID_ABONNE'] . "' title='Delete Record' data-toggle='tooltip'><i class='bi bi-trash-fill'></a>";
+                    echo "<a href='read_abonne.php?id=" . $row['ID_ABONNE'] . "' title='View Record' data-toggle='tooltip'><i class='bi bi-eye'></i></a>";
+                    echo "<a href='update_abonne.php?id=" . $row['ID_ABONNE'] . "' title='Update Record' data-toggle='tooltip'> <i class='bi bi-pen-fill'></i></a>";
+                    echo "<a href='delete_abonne.php?id=" . $row['ID_ABONNE'] . "' title='Delete Record' data-toggle='tooltip'><i class='bi bi-trash-fill'></a>";
                     echo "</td>";
                     echo "</tr>";
                   }

@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($nom_abonne_err) && empty($prenom_abonne_err) && empty($username_abonne_err) && empty($password_abonne_err) && empty($adresse_abonne_err)  && empty($telephone_abonne_err) && empty($categorie_abonne_err) && empty($date_adhesion_err) && empty($date_naissance_err)) {
         // Prepare an insert statement
 
-        $sql = "INSERT INTO abonne (id_abonne, nom_abonne, prenom_abonne,username_abonne,password_abonne,adresse_abonne,telephone_abonne,categorie_abonne,date_adhesion,date_naissance) VALUES (20, ?, ?,?,?,?,?,?,?,?)";
+        $sql = "insert into abonne(id_abonne,nom_abonne,prenom_abonne,username_abonne,password_abonne,adresse_abonne,telephone_abonne,categorie_abonne,date_adhesion,date_naissance) Values(ma_sequence_abonne.NEXTVAL,?,?,?,?,?,?,?,?,?)";
 
         //if($stmt = mysqli_prepare($link, $sql)){
         if ($stmt = $link->prepare($sql)) {
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //if(mysqli_stmt_execute($stmt)){
             if ($stmt->execute()) {
                 // Records created successfully. Redirect to landing page
-                header("location: index.php");
+                header("location: index_abonne.php");
                 exit();
             } else {
                 echo "Something went wrong. Please try again later.";
@@ -179,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="index.html" class="logo d-flex align-items-center">
+            <a href="./index_abonne.php" class="logo d-flex align-items-center">
                 <img src="assets/img/logo.png" alt="">
                 <span class="d-none d-lg-block">Ajouter Abonné</span>
             </a>
@@ -475,8 +475,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <textarea name="date_naissance" class="form-control"><?php echo $date_naissance; ?></textarea>
                                     <span class="help-block"><?php echo $date_naissance_err; ?></span>
                                 </div>
+                                <br>
                                 <input type="submit" class="btn btn-primary" value="Submit">
-                                <a href="index.php" class="btn btn-default">Cancel</a>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <a href="index_abonne.php" class="btn btn-danger">Cancel</a>
                             </form>
 
                         </div>
