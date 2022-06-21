@@ -1,66 +1,151 @@
 <?php
-// Check existence of id parameter before processing further
-if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
-    // Include config file
-    require_once "../config.php";
+// Include ../config file
+require_once "../config.php";
 
-    // Prepare a select statement
-    $sql = "SELECT * FROM abonne WHERE ID_ABONNE = ?";
+// Define variables and initialize with empty values
+$id_pret = $date_pret = $date_retour = $id_abonne =  $id_livre = "";
+$id_pret  = $date_pret_err = $date_retour_err = $id_abonne_err  = $id_livre_err  = "";
 
-    //if($stmt = mysqli_prepare($link, $sql)){
-    if ($stmt = $link->prepare($sql)) {
-        // Bind variables to the prepared statement as parameters
-        //mysqli_stmt_bind_param($stmt, "i", $param_id);
-        $stmt->bindParam(1, $param_id, PDO::PARAM_INT);
+// Processing form data when form is submitted
+if (isset($_POST["id"]) && !empty($_POST["id"])) {
+    // Get hidden input value
+    $id = $_POST["id"];
 
-        // Set parameters
-        $param_id = trim($_GET["id"]);
 
-        // Attempt to execute the prepared statement
-        //if(mysqli_stmt_execute($stmt)){
-        if ($stmt->execute()) {
-            //$result = mysqli_stmt_get_result($stmt);
-            $result = $stmt->fetchAll();
-
-            //if(mysqli_num_rows($result) == 1){
-            if (count($result) == 1) {
-                /* Fetch result row as an associative array. Since the result set
-                contains only one row, we don't need to use while loop */
-                //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-                $row = $result[0];
-
-                // Retrieve individual field value
-                $nom_abonne = $row["NOM_ABONNE"];
-                $prenom_abonne = $row['PRENOM_ABONNE'];
-                $username_abonne = $row['USERNAME_ABONNE'];
-                $password_abonne = $row['PASSWORD_ABONNE'];
-                $adresse_abonne = $row['ADRESSE_ABONNE'];
-                $telephone_abonne = $row['TELEPHONE_ABONNE'];
-                $date_adhesion = $row['DATE_ADHESION'];
-                $date_naissance_abonne = $row['DATE_NAISSANCE'];
-                $categorie_abonne = $row['CATEGORIE_ABONNE'];
-            } else {
-                // URL doesn't contain valid id parameter. Redirect to error page
-                header("location: error.php");
-                exit();
-            }
-        } else {
-            echo "Oops! Something went wrong. Please try again later.";
-        }
+    // Validate date pret
+    $input_date_pret = trim($_POST["date_pret"]);
+    if (empty($input_date_pret)) {
+        $date_pret_err = "Entrer la date du nouveau prét.";
+    } else {
+        $date_pret = $input_date_pret;
     }
 
-    // Close statement
-    //mysqli_stmt_close($stmt);
-    $stmt->closeCursor(); //PDO close
+
+    // Validate date retour
+    $input_date_retour = trim($_POST["date_retour"]);
+    if (empty($input_date_retour)) {
+        $date_retour_err = "Entrer la date du retour.";
+    } else {
+        $date_retour = $input_date_retour;
+    }
+
+    // Validate id_abonne
+    $input_id_abonne = trim($_POST["id_abonne"]);
+    if (empty($input_id_abonne)) {
+        $id_abonne_err = "Entrer le l'id l'abonné.";
+    } else {
+        $id_abonne = $input_id_abonne;
+    }
+
+    // Validate id_livre
+    $input_id_livre = trim($_POST["id_livre"]);
+    if (empty($input_id_livre)) {
+        $id_livre_err = "Entrer le l'id du livre.";
+    } else {
+        $id_livre = $input_id_livre;
+    }
+
+
+    // Check input errors before inserting in database
+    if (empty($date_pret_err) && empty($date_retour_err) && empty($id_abonne_err) && empty($id_livre_err)) {
+        // Prepare an update statement
+        $sql = "UPDATE pret SET date_pret=?, date_retour=?,id_abonne=?,id_livre=? WHERE ID_PRET=?";
+
+        //if($stmt = mysqli_prepare($link, $sql)){
+        if ($stmt = $link->prepare($sql)) {
+            // Bind variables to the prepared statement as parameters
+            //mysqli_stmt_bind_param($stmt, "sssi", $param_name, $param_address, $param_salary, $param_id);
+
+            $stmt->bindParam(1, $param_date_pret, PDO::PARAM_STR);
+            $stmt->bindParam(2, $param_date_retour, PDO::PARAM_STR);
+            $stmt->bindParam(3, $param_id_abonne, PDO::PARAM_INT);
+            $stmt->bindParam(4, $param_id_livre, PDO::PARAM_INT);
+            $stmt->bindParam(5, $param_id, PDO::PARAM_INT);
+
+            // Set parameters
+            $param_date_pret = $date_pret;
+            $param_date_retour = $date_retour;
+            $param_id_abonne = $id_abonne;
+            $param_id_livre = $id_livre;
+            $param_id = $id;
+
+            // Attempt to execute the prepared statement
+            //if(mysqli_stmt_execute($stmt)){
+            if ($stmt->execute()) {
+                // Records updated successfully. Redirect to landing page
+                header("location: index_pret.php");
+                exit();
+            } else {
+                echo "Something went wrong. Please try again later.";
+            }
+        }
+
+        // Close statement
+        //mysqli_stmt_close($stmt);
+        $stmt->closeCursor(); //PDO close
+    }
 
     // Close connection
     //mysqli_close($link);
 } else {
-    // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
-    exit();
+    // Check existence of id parameter before processing further
+    if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
+        // Get URL parameter
+        $id =  trim($_GET["id"]);
+
+        // Prepare a select statement
+        $sql = "SELECT * FROM pret WHERE ID_PRET = ?";
+        //if($stmt = mysqli_prepare($link, $sql)){
+        if ($stmt = $link->prepare($sql)) {
+            // Bind variables to the prepared statement as parameters
+            //mysqli_stmt_bind_param($stmt, "i", $param_id);
+            $stmt->bindParam(1, $param_id, PDO::PARAM_INT);
+
+            // Set parameters
+            $param_id = $id;
+
+            // Attempt to execute the prepared statement
+            //if(mysqli_stmt_execute($stmt)){
+            if ($stmt->execute()) {
+                //$result = mysqli_stmt_get_result($stmt);
+                $result = $stmt->fetchAll();
+
+                //if(mysqli_num_rows($result) == 1){
+                if (count($result) == 1) {
+                    /* Fetch result row as an associative array. Since the result set
+                    contains only one row, we don't need to use while loop */
+                    //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                    $row = $result[0];
+
+                    // Retrieve individual field value
+                    $date_pret = $row["DATE_PRET"];
+                    $date_retour = $row["DATE_RETOUR"];
+                    $id_abonne = $row["ID_ABONNE"];
+                    $id_livre = $row["ID_LIVRE"];
+                } else {
+                    // URL doesn't contain valid id. Redirect to error page
+                    header("location: error.php");
+                    exit();
+                }
+            } else {
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+        }
+
+        // Close statement
+        //mysqli_stmt_close($stmt);
+        $stmt->closeCursor(); //PDO close
+
+        // Close connection
+        //mysqli_close($link);
+    } else {
+        // URL doesn't contain id parameter. Redirect to error page
+        header("location: error.php");
+        exit();
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,7 +153,7 @@ if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Tables / Data - Admin</title>
+    <title>Abonnés</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -108,7 +193,7 @@ if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
                 <img src="assets/img/logo.png" alt="">
-                <span class="d-none d-lg-block">Abonnés</span>
+                <span class="d-none d-lg-block">Modifier un Prét</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
@@ -337,7 +422,7 @@ if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Abonnés</h1>
+            <h1>Préts</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -353,57 +438,40 @@ if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Afficher Abonné</h5>
+                            <h5 class="card-title">Modifier un Prét</h5>
+                            <!-- Horizontal Form -->
+                            <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
+                                <div class="form-group <?php echo (!empty($date_pret_err)) ? 'has-error' : ''; ?>">
+                                    <label>Date prét</label>
+                                    <textarea name="date_pret" class="form-control"><?php echo $date_pret; ?></textarea>
+                                    <span class="help-block"><?php echo $date_pret_err; ?></span>
+                                </div>
+                                <div class="form-group <?php echo (!empty($date_retour_err)) ? 'has-error' : ''; ?>">
+                                    <label>Date retour</label>
+                                    <textarea name="date_retour" class="form-control"><?php echo $date_retour; ?></textarea>
+                                    <span class="help-block"><?php echo $date_retour_err; ?></span>
+                                </div>
+                                <div class="form-group <?php echo (!empty($id_abonne_err)) ? 'has-error' : ''; ?>">
+                                    <label>ID abonné</label>
+                                    <textarea name="id_abonne" class="form-control"><?php echo $id_abonne; ?></textarea>
+                                    <span class="help-block"><?php echo $id_abonne_err; ?></span>
+                                </div>
+                                <div class="form-group <?php echo (!empty($id_livre_err)) ? 'has-error' : ''; ?>">
+                                    <label>ID livre</label>
+                                    <textarea name="id_livre" class="form-control"><?php echo $id_livre; ?></textarea>
+                                    <span class="help-block"><?php echo $id_livre_err; ?></span>
+                                </div>
+                                <br>
+                                <input type="hidden" name="id" value="<?php echo $id; ?>" />
+                                <input type="submit" class="btn btn-primary" value="Submit">
+                                <a href="index_pret.php" class="btn btn-danger">Cancel</a>
+                            </form>
 
-
-                            <div class="form-group">
-                                <label class="fw-bold">Nom</label>
-                                <p class="form-control-static"><?php echo $nom_abonne; ?></p>
-                            </div>
-                            <div class="form-group">
-                                <label class="fw-bold">Prénom</label>
-                                <p class="form-control-static"><?php echo $prenom_abonne; ?></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="fw-bold">Nom d'utilisateur</label>
-                                <p class="form-control-static"><?php echo $username_abonne; ?></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="fw-bold">Mot de passe</label>
-                                <p class="form-control-static"><?php echo $password_abonne; ?></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="fw-bold">Adresse</label>
-                                <p class="form-control-static"><?php echo $adresse_abonne; ?></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="fw-bold">télèphone</label>
-                                <p class="form-control-static"><?php echo $telephone_abonne; ?></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="fw-bold">Date d'adhésion</label>
-                                <p class="form-control-static"><?php echo $date_adhesion; ?></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="fw-bold">Date de Naissance</label>
-                                <p class="form-control-static"><?php echo $date_naissance_abonne; ?></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="fw-bold">Catégorie</label>
-                                <p class="form-control-static"><?php echo $categorie_abonne; ?></p>
-                            </div>
-
-                            <p><a href="index.php" class="btn btn-primary">Back</a></p>
                         </div>
-
                     </div>
+
+                </div>
+            </div>
         </section>
 
     </main><!-- End #main -->

@@ -1,11 +1,11 @@
 <?php
 // Check existence of id parameter before processing further
 if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
-    // Include config file
+    // Include ../config file
     require_once "../config.php";
 
     // Prepare a select statement
-    $sql = "SELECT * FROM abonne WHERE ID_ABONNE = ?";
+    $sql = "SELECT * FROM pret WHERE ID_PRET = ?";
 
     //if($stmt = mysqli_prepare($link, $sql)){
     if ($stmt = $link->prepare($sql)) {
@@ -30,15 +30,10 @@ if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
                 $row = $result[0];
 
                 // Retrieve individual field value
-                $nom_abonne = $row["NOM_ABONNE"];
-                $prenom_abonne = $row['PRENOM_ABONNE'];
-                $username_abonne = $row['USERNAME_ABONNE'];
-                $password_abonne = $row['PASSWORD_ABONNE'];
-                $adresse_abonne = $row['ADRESSE_ABONNE'];
-                $telephone_abonne = $row['TELEPHONE_ABONNE'];
-                $date_adhesion = $row['DATE_ADHESION'];
-                $date_naissance_abonne = $row['DATE_NAISSANCE'];
-                $categorie_abonne = $row['CATEGORIE_ABONNE'];
+                $date_pret = $row["DATE_PRET"];
+                $date_retour = $row["DATE_RETOUR"];
+                $id_abonne = $row["ID_ABONNE"];
+                $id_livre = $row["ID_LIVRE"];
             } else {
                 // URL doesn't contain valid id parameter. Redirect to error page
                 header("location: error.php");
@@ -108,7 +103,7 @@ if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
                 <img src="assets/img/logo.png" alt="">
-                <span class="d-none d-lg-block">Abonnés</span>
+                <span class="d-none d-lg-block">Préts</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
@@ -353,54 +348,31 @@ if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Afficher Abonné</h5>
+                            <h5 class="card-title">Afficher prét</h5>
 
 
                             <div class="form-group">
-                                <label class="fw-bold">Nom</label>
-                                <p class="form-control-static"><?php echo $nom_abonne; ?></p>
+                                <label class="fw-bold">Date Prét</label>
+                                <p class="form-control-static"><?php echo $date_pret; ?></p>
                             </div>
                             <div class="form-group">
-                                <label class="fw-bold">Prénom</label>
-                                <p class="form-control-static"><?php echo $prenom_abonne; ?></p>
+                                <label class="fw-bold">Date Retour</label>
+                                <p class="form-control-static"><?php echo  $date_retour; ?></p>
                             </div>
 
                             <div class="form-group">
-                                <label class="fw-bold">Nom d'utilisateur</label>
-                                <p class="form-control-static"><?php echo $username_abonne; ?></p>
+                                <label class="fw-bold">Id Abonné</label>
+                                <p class="form-control-static"><?php echo $id_abonne; ?></p>
                             </div>
 
                             <div class="form-group">
-                                <label class="fw-bold">Mot de passe</label>
-                                <p class="form-control-static"><?php echo $password_abonne; ?></p>
+                                <label class="fw-bold">Id livre</label>
+                                <p class="form-control-static"><?php echo $id_livre; ?></p>
                             </div>
 
-                            <div class="form-group">
-                                <label class="fw-bold">Adresse</label>
-                                <p class="form-control-static"><?php echo $adresse_abonne; ?></p>
-                            </div>
 
-                            <div class="form-group">
-                                <label class="fw-bold">télèphone</label>
-                                <p class="form-control-static"><?php echo $telephone_abonne; ?></p>
-                            </div>
 
-                            <div class="form-group">
-                                <label class="fw-bold">Date d'adhésion</label>
-                                <p class="form-control-static"><?php echo $date_adhesion; ?></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="fw-bold">Date de Naissance</label>
-                                <p class="form-control-static"><?php echo $date_naissance_abonne; ?></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="fw-bold">Catégorie</label>
-                                <p class="form-control-static"><?php echo $categorie_abonne; ?></p>
-                            </div>
-
-                            <p><a href="index.php" class="btn btn-primary">Back</a></p>
+                            <p><a href="index_pret.php" class="btn btn-primary">Back</a></p>
                         </div>
 
                     </div>

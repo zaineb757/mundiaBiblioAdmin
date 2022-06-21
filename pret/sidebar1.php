@@ -1,51 +1,18 @@
-
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link " href="index.php">
+            <a class="nav-link " href="index.html">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
         </li><!-- End Dashboard Nav -->
         <!--Start Abonne-->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="abonne/index_abonne.php">
-                <i class="bi bi-menu-button-wide"></i><span>Abonnées</span>
-            </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-
-            </ul>
-        </li><!-- End Components Nav -->
-        <li class="nav-item">
-            <a href="consulter_livre.php" class="nav-link collapsed">
-                <i class="bi bi-menu-button-wide"></i><span>Livres</span>
-            </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-
-            </ul>
-        </li><!-- End Components Nav -->
-        <li class="nav-item">
-<<<<<<< HEAD
-            <a href="consulter_livre.php" class="nav-link collapsed">
-                <i class="bi bi-menu-button-wide"></i><span>Auteurs</span>
-            </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-
-            </ul>
-        </li><!-- End Components Nav -->
-       
-      
-       
-        <li class="nav-item">
-            <a href="users/index_user.php" class="nav-link collapsed">
-                <i class="bi bi-menu-button-wide"></i><span>Bibliothequaires</span>
-=======
-            <a href="pret/index_pret.php" class="nav-link collapsed">
-                <i class="bi bi-menu-button-wide"></i><span>Préts</span>
->>>>>>> 6091b2f20d2e197eb5a0e72a39215e7e61f8d7aa
+            <a class="nav-link collapsed" href="index_abonne.php">
+                <i class="bi bi-menu-button-wide"></i><span>Abonnés</span>
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
@@ -55,7 +22,7 @@
         <!--End Abonne -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="./index.php">
                 <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">

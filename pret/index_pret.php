@@ -290,18 +290,18 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Abonnés</h5>
-              <a href="create_abonne.php" class="btn btn-success pull-right">Ajouter</a>
+              <h5 class="card-title">Préts</h5>
+              <a href="create_pret.php" class="btn btn-success pull-right">Ajouter</a>
 
               <!-- Table with stripped rows -->
 
 
               <?php
-              // Include config file
+              // Include ../config file
               require_once "../config.php";
 
               // Attempt select query execution
-              $sql = "SELECT * FROM abonne";
+              $sql = "SELECT * FROM pret";
 
               //if($result = mysqli_query($link, $sql)){
               if ($result = $link->query($sql)) {
@@ -311,16 +311,13 @@
                   echo "<table class='table datatable'>";
                   echo "<thead>";
                   echo "<tr>";
-                  echo "<th></th>";
-                  echo "<th>Nom</th>";
-                  echo "<th>Prénom</th>";
-                  echo "<th>Username</th>";
-                  echo "<th>Password</th>";
-                  echo "<th>Adresse</th>";
-                  echo "<th>Téléphone</th>";
-                  echo "<th>Date adhésion</th>";
-                  echo "<th>Date naissance</th>";
-                  echo "<th>Catégorie</th>";
+
+                  echo "<th>Id Prét</th>";
+                  echo "<th>Date Prét</th>";
+                  echo "<th>Date Retour</th>";
+                  echo "<th>Id Abonné</th>";
+                  echo "<th>Id Livre</th>";
+
                   echo "<th>Action</th>";
                   echo "</tr>";
                   echo "</thead>";
@@ -328,21 +325,17 @@
                   //while($row = mysqli_fetch_array($result)){
                   foreach ($link->query($sql) as $row) {
                     echo "<tr>";
+                    echo "<td>" . $row['ID_PRET'] . "</td>";
+                    echo "<td>" . $row['DATE_PRET'] . "</td>";
+                    echo "<td>" . $row['DATE_RETOUR'] . "</td>";
                     echo "<td>" . $row['ID_ABONNE'] . "</td>";
-                    echo "<td>" . $row['NOM_ABONNE'] . "</td>";
-                    echo "<td>" . $row['PRENOM_ABONNE'] . "</td>";
-                    echo "<td>" . $row['USERNAME_ABONNE'] . "</td>";
-                    echo "<td>" . $row['PASSWORD_ABONNE'] . "</td>";
-                    echo "<td>" . $row['ADRESSE_ABONNE'] . "</td>";
-                    echo "<td>" . $row['TELEPHONE_ABONNE'] . "</td>";
-                    echo "<td>" . $row['DATE_ADHESION'] . "</td>";
-                    echo "<td>" . $row['DATE_NAISSANCE'] . "</td>";
-                    echo "<td>" . $row['CATEGORIE_ABONNE'] . "</td>";
+                    echo "<td>" . $row['ID_LIVRE'] . "</td>";
+
 
                     echo "<td>";
-                    echo "<a href='read_abonne.php?id=" . $row['ID_ABONNE'] . "' title='View Record' data-toggle='tooltip'><i class='bi bi-eye'></i></a>";
-                    echo "<a href='update_abonne.php?id=" . $row['ID_ABONNE'] . "' title='Update Record' data-toggle='tooltip'> <i class='bi bi-pen-fill'></i></a>";
-                    echo "<a href='delete_abonne.php?id=" . $row['ID_ABONNE'] . "' title='Delete Record' data-toggle='tooltip'><i class='bi bi-trash-fill'></a>";
+                    echo "<a href='read_pret.php?id=" . $row['ID_PRET'] . "' title='View Record' data-toggle='tooltip'><i class='bi bi-eye'></i></a>";
+                    echo "<a href='update_pret.php?id=" . $row['ID_PRET'] . "' title='Update Record' data-toggle='tooltip'> <i class='bi bi-pen-fill'></i></a>";
+                    echo "<a href='delete_pret.php?id=" . $row['ID_PRET'] . "' title='Delete Record' data-toggle='tooltip'><i class='bi bi-trash-fill'></a>";
                     echo "</td>";
                     echo "</tr>";
                   }

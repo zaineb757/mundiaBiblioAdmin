@@ -1,11 +1,11 @@
 <?php
 // Process delete operation after confirmation
 if (isset($_POST["id"]) && !empty($_POST["id"])) {
-    // Include config file
+    // Include ../config file
     require_once "../config.php";
 
     // Prepare a delete statement
-    $sql = "DELETE FROM abonne WHERE ID_ABONNE = ?";
+    $sql = "DELETE FROM pret WHERE ID_PRET = ?";
 
     //if($stmt = mysqli_prepare($link, $sql)){
     if ($stmt = $link->prepare($sql)) {
@@ -68,10 +68,10 @@ if (isset($_POST["id"]) && !empty($_POST["id"])) {
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="alert alert-danger fade in">
                             <input type="hidden" name="id" value="<?php echo trim($_GET["id"]); ?>" />
-                            <p>Vous vulez vraiment supprimer cet abonne?</p><br>
+                            <p>Vous vulez vraiment supprimer ce prét?</p><br>
                             <p>
                                 <input type="submit" value="Oui" class="btn btn-danger">
-                                <a href="index_abonne.php" class="btn btn-default">Non</a>
+                                <a href="index_pret.php" class="btn btn-default">Non</a>
                             </p>
                         </div>
                     </form>

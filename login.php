@@ -1,6 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
+<<<<<<< HEAD
     if (isset($_POST['username'])) {
         $username = htmlentities($_POST['username']);
         $password = htmlentities($_POST['password']);
@@ -25,9 +26,31 @@ WHERE username_user=:username AND password_user=:password";
         }
     } else {
        // printf("chi haja mahiyach");
+=======
+  if (isset($_POST['username'])) {
+    $username = htmlentities($_POST['username']);
+    $password = htmlentities($_POST['password']);
+    $conn = oci_connect('zaineb', 'zaineb', 'XE')
+      or die("Can't connect to database server!");
+
+    $query = "SELECT username_abonne, password_abonne FROM abonne
+WHERE username_abonne=:username AND password_abonne=:password";
+    $stmt = oci_parse($conn, $query);
+    oci_bind_by_name($stmt, ':username', $username, 8);
+    oci_bind_by_name($stmt, ':password', $password, 32);
+    oci_execute($stmt);
+    list($username, $password) = oci_fetch_array($stmt, OCI_NUM);
+    if ($username != "") {
+      $_SESSION['username'] = $username;
+      echo "You've successfully logged in. ";
+      header("Location:Menu.html");
+>>>>>>> 6091b2f20d2e197eb5a0e72a39215e7e61f8d7aa
     }
+  } else {
+    // printf("chi haja mahiyach");
+  }
 } else {
-   // printf("Welcome back, %s!", $_SESSION['username']);
+  // printf("Welcome back, %s!", $_SESSION['username']);
 }
 ?>
 
@@ -97,8 +120,8 @@ WHERE username_user=:username AND password_user=:password";
                     <p class="text-center small">Enter your username & password to login</p>
                   </div>
 
-                  
-				  <form class="row g-3 needs-validation" novalidate method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+
+                  <form class="row g-3 needs-validation" novalidate method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>
@@ -122,11 +145,11 @@ WHERE username_user=:username AND password_user=:password";
                       </div>
                     </div>
                     <div class="col-12">
-					
+
                       <button class="btn btn-primary w-100" type="submit" value="Login">Login</button>
-					  <a href="logout.php" class="btn btn-default">Cancel</a>
+                      <a href="logout.php" class="btn btn-default">Cancel</a>
                     </div>
-                 
+
                   </form>
 
                 </div>
