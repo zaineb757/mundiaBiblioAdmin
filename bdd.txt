@@ -46,19 +46,35 @@ ALTER TABLE genre ADD (
 CREATE SEQUENCE abonne_seq START WITH 1;
 
 create table abonne(
-	id_abonne Number(10) DEFAULT abonne_seq.nextval not null,
+	id_abonne  NUMBER DEFAULT abonne_seq.nextval not null ,
 	nom_abonne Varchar2(25),
 	prenom_abonne Varchar2(25),
+    username_abonne Varchar2(25),
+    password_abonne Varchar2(25),
 	adresse_abonne Varchar2(50),
 	telephone_abonne Varchar2(25),
-	date_adhesion_abonne DATE,
-	date_naissance_abonne DATE,
-    categorie_abonne Varchar2(25),
-	username_abonne Varchar2(25),
-	password_abonne Varchar2(25)
+	date_adhesion_abonne Varchar2(25),
+	date_naissance_abonne Varchar2(25),
+    categorie_abonne Varchar2(25)
 );
 
-ALTER TABLE abonne ADD (
-  CONSTRAINT abonne_pk PRIMARY KEY (id_abonne)
+Alter table abonne Add PRIMARY KEY(id_abonne);
+
+----------- User
+
+CREATE SEQUENCE user_seq START WITH 1;
+
+create table users(
+	id_user  NUMBER DEFAULT user_seq.nextval not null ,
+	nom_userVarchar2(25),
+	prenom_user Varchar2(25),
+    username_userVarchar2(25),
+    password_user Varchar2(25),
+	adresse_user Varchar2(50),
+	telephone_user Varchar2(25),
+	date_adhesion_user Varchar2(25),
+	date_naissance_user Varchar2(25),
+    categorie_user Varchar2(25)
 );
+Alter table users Add PRIMARY KEY(id_user);
 
