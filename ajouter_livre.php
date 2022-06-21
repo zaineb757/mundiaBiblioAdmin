@@ -48,7 +48,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Bind variables to the prepared statement as parameters
             //mysqli_stmt_bind_param($stmt, "sss", $param_name, $param_address, $param_salary);
             $stmt->bindParam(1, $param_titre_livre, PDO::PARAM_STR);
-		      	$stmt->bindParam(2, $param_code_catalogue, PDO::PARAM_STR);
+		   	$stmt->bindParam(2, $param_code_catalogue, PDO::PARAM_STR);
             $stmt->bindParam(3, $param_code_rayon, PDO::PARAM_STR);
          
             
