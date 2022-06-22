@@ -3,8 +3,8 @@
 require_once "config_anas.php";
  
 // Define variables and initialize with empty values
-$titre_livre = $code_catalogue = $code_rayon = "";
-$titre_livre_err = $code_catalogue_err = $code_rayon_err = "";
+$titre_livre = $code_catalogue = $code_rayon = $exemplaires = "";
+$titre_livre_err = $code_catalogue_err = $code_rayon_err = $exemplaires_err = "";
  
 // Processing form data when form is submitted
 if(isset($_POST["id"]) && !empty($_POST["id"])){
@@ -34,13 +34,21 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     } else{
         $code_rayon = $input_code_rayon;
     }
+
+    // Validate code rayon
+    $input_exemplaires = trim($_POST["exemplaires"]);
+    if(empty($input_exemplaires)){
+        $exemplaires_err = "Saisir le nombre d'exemplaires";     
+    } else{
+        $exemplaires = $input_exemplaires;
+    }
     
   
     
     // Check input errors before inserting in database
-    if(empty($titre_livre_err) && empty($code_catalogue_err) && empty($code_rayon_err)){
+    if(empty($titre_livre_err) && empty($code_catalogue_err) && empty($code_rayon_err) && empty($exemplaires_err)){
         // Prepare an update statement
-        $sql = "UPDATE livre SET titre_livre=?, code_catalogue=?, code_rayon=? WHERE ID_LIVRE='$id' "; 
+        $sql = "UPDATE livre SET titre_livre=?, code_catalogue=?, code_rayon=?, exemplaires='$exemplaires' WHERE ID_LIVRE='$id' "; 
          
         //if($stmt = mysqli_prepare($link, $sql)){
         if($stmt = $link->prepare($sql)){
@@ -107,9 +115,10 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     $row = $result[0];
                     
                     // Retrieve individual field value
-					$titre_livre = $row["TITRE_LIVRE"];
-					$code_catalogue = $row["CODE_CATALOGUE"];
-					$code_rayon = $row["CODE_RAYON"];
+                    $titre_livre = $row["TITRE_LIVRE"];
+                    $code_catalogue = $row["CODE_CATALOGUE"];
+                    $code_rayon = $row["CODE_RAYON"];
+                    $exemplaires = $row["EXEMPLAIRES"];
                  
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
@@ -675,6 +684,12 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 						<span class="help-block"><?php echo $code_rayon_err;?></span>
 					</div>
 					<br>
+          <div class="col-12 <?php echo (!empty($exemplaires_err)) ? 'has-error' : ''; ?>">
+            <label class="form-label">Nombre d'exemplaires</label>
+            <textarea name="exemplaires" class="form-control"><?php echo $exemplaires; ?></textarea>
+            <span class="help-block"><?php echo $exemplaires_err;?></span>
+          </div>
+          <br>
 					<div class="text-center">
 					  <input type="hidden" name="id" value="<?php echo $id; ?>"/>
 					  <a href="consulter_livre.php" class="btn btn-danger">Cancel</a>

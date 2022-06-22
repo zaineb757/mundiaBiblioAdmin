@@ -3,8 +3,8 @@
 require_once "config_anas.php";
  
 // Define variables and initialize with empty values
-$titre_livre = $code_catalogue = $code_rayon = "";
-$titre_livre_err = $code_catalogue_err = $code_rayon_err = "";
+$titre_livre = $code_catalogue = $code_rayon = $exemplaires = "";
+$titre_livre_err = $code_catalogue_err = $code_rayon_err = $exemplaires_err = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -12,7 +12,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	// Validate titre du livre
     $input_titre_livre = trim($_POST["titre_livre"]);
     if(empty($input_titre_livre)){
-        $titre_livre_err = "Please enter a name.";
+        $titre_livre_err = "Saisir le titre !";
     } else{
         $titre_livre = $input_titre_livre;
     }
@@ -20,7 +20,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate code catalogue
     $input_code_catalogue = trim($_POST["code_catalogue"]);
     if(empty($input_code_catalogue)){
-        $code_catalogue_err = "Please enter an nom_auteur.";     
+        $code_catalogue_err = "Saisir le code catalogue";     
     } else{
         $code_catalogue = $input_code_catalogue;
     }
@@ -28,37 +28,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	// Validate code rayon
     $input_code_rayon = trim($_POST["code_rayon"]);
     if(empty($input_code_rayon)){
-        $code_rayon_err = "Please enter an nom_auteur.";     
+        $code_rayon_err = "Saisir le code rayon !";     
     } else{
         $code_rayon = $input_code_rayon;
+    }
+
+    // Validate code rayon
+    $input_exemplaires = trim($_POST["exemplaires"]);
+    if(empty($input_exemplaires)){
+        $exemplaires_err = "Saisir le nombre d'exemplaires";     
+    } else{
+        $exemplaires = $input_exemplaires;
     }
     
     
     // Check input errors before inserting in database
-    if(empty($titre_livre_err) && empty($code_catalogue_err) && empty($code_rayon_err)){
+    if(empty($titre_livre_err) && empty($code_catalogue_err) && empty($code_rayon_err) && empty($exemplaires_err)){
         // Prepare an insert statement
 		
         //$sql = "INSERT INTO livre (id_auteur, nom_auteur, prenom_auteur) VALUES (, ?, ?)";
 		
-        $sql = "INSERT INTO livre VALUES (livre_seq.nextval, '$titre_livre', '$code_catalogue', '$code_rayon',1,1,1,1)";
+        $sql = "INSERT INTO livre VALUES (livre_seq.nextval, '$titre_livre', '$code_catalogue', '$code_rayon','$exemplaires',1,1,1)";
         //$sql = "INSERT INTO livre VALUES (3, 'book3', 'cat3', 'ray3', 1,1,1,1)";
          
         //if($stmt = mysqli_prepare($link, $sql)){
         if($stmt = $link->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
-            //mysqli_stmt_bind_param($stmt, "sss", $param_name, $param_address, $param_salary);
-            $stmt->bindParam(1, $param_titre_livre, PDO::PARAM_STR);
-		   	$stmt->bindParam(2, $param_code_catalogue, PDO::PARAM_STR);
-            $stmt->bindParam(3, $param_code_rayon, PDO::PARAM_STR);
-         
-            
-            // Set parameters
-            $param_titre_livre = $titre_livre;
-			      $param_code_catalogue= $code_catalogue;
-            $param_code_rayon = $code_rayon;
-          
-            
-            // Attempt to execute the prepared statement
             //if(mysqli_stmt_execute($stmt)){
             if($stmt->execute()){
                 // Records created successfully. Redirect to landing page
@@ -613,6 +607,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                   <label class="form-label">Code rayon</label>
                   <input name="code_rayon" class="form-control"><?php echo $code_rayon; ?></input>
                   <span class="help-block"><?php echo $code_rayon_err;?></span>
+                </div>
+                <div class="col-12 <?php echo (!empty($exemplaires_err)) ? 'has-error' : ''; ?>">
+                  <label class="form-label">Nombre d'exemplaires</label>
+                  <input name="exemplaires" class="form-control"><?php echo $exemplaires; ?></input>
+                  <span class="help-block"><?php echo $exemplaires_err;?></span>
                 </div>
                 <div class="text-center">
                   <a href="consulter_livre.php" class="btn btn-danger">Cancel</a>
