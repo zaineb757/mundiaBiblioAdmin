@@ -3,8 +3,8 @@
 require_once "config_anas.php";
  
 // Define variables and initialize with empty values
-$titre_livre = $code_catalogue = $code_rayon = $exemplaires = "";
-$titre_livre_err = $code_catalogue_err = $code_rayon_err = $exemplaires_err = "";
+$titre_livre = $code_catalogue = $code_rayon = $exemplaires = $auteur = $editeur = $genre = "";
+$titre_livre_err = $code_catalogue_err = $code_rayon_err = $exemplaires_err = $auteur_err = $editeur_err = $genre_err ="";
  
 // Processing form data when form is submitted
 if(isset($_POST["id"]) && !empty($_POST["id"])){
@@ -35,34 +35,58 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         $code_rayon = $input_code_rayon;
     }
 
-    // Validate code rayon
+    // Validate exemplaires
     $input_exemplaires = trim($_POST["exemplaires"]);
     if(empty($input_exemplaires)){
         $exemplaires_err = "Saisir le nombre d'exemplaires";     
     } else{
         $exemplaires = $input_exemplaires;
     }
+
+    // Validate auteur
+    $input_auteur = trim($_POST["auteur"]);
+    if(empty($input_auteur)){
+        $auteur_err = "Saisir le nom d'auteur !";     
+    } else{
+        $auteur = $input_auteur;
+    }
+
+    // Validate editeur
+    $input_editeur = trim($_POST["editeur"]);
+    if(empty($input_editeur)){
+        $editeur_err = "Saisir le nom d'editeur !";     
+    } else{
+        $editeur = $input_editeur;
+    }
+
+    // Validate genre
+    $input_genre = trim($_POST["genre"]);
+    if(empty($input_genre)){
+        $genre_err = "Saisir la libelle du genre !";     
+    } else{
+        $genre = $input_genre;
+    }
     
   
     
     // Check input errors before inserting in database
-    if(empty($titre_livre_err) && empty($code_catalogue_err) && empty($code_rayon_err) && empty($exemplaires_err)){
+    if(empty($titre_livre_err) && empty($code_catalogue_err) && empty($code_rayon_err) && empty($exemplaires_err) && empty($auteur_err) && empty($editeur_err) && empty($genre_err)){
         // Prepare an update statement
-        $sql = "UPDATE livre SET titre_livre=?, code_catalogue=?, code_rayon=?, exemplaires='$exemplaires' WHERE ID_LIVRE='$id' "; 
+        $sql = "UPDATE livre SET titre_livre=?, code_catalogue=?, code_rayon=?, exemplaires='$exemplaires', auteur='$auteur', editeur='$editeur', genre='$genre' WHERE ID_LIVRE='$id' "; 
          
         //if($stmt = mysqli_prepare($link, $sql)){
         if($stmt = $link->prepare($sql)){
             // Bind variables to the prepared statement as parameters
             //mysqli_stmt_bind_param($stmt, "sssi", $param_name, $param_address, $param_salary, $param_id);
             $stmt->bindParam(1, $param_titre_livre, PDO::PARAM_STR);
-			$stmt->bindParam(2, $param_code_catalogue, PDO::PARAM_STR);
+			      $stmt->bindParam(2, $param_code_catalogue, PDO::PARAM_STR);
             $stmt->bindParam(3, $param_code_rayon, PDO::PARAM_STR);
      
             $stmt->bindParam(4, $param_id, PDO::PARAM_INT);
             
             // Set parameters
             $param_titre_livre = $titre_livre;
-			$param_code_catalogue= $code_catalogue;
+			      $param_code_catalogue= $code_catalogue;
             $param_code_rayon = $code_rayon;
             $param_id = $id;
             
@@ -119,6 +143,9 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     $code_catalogue = $row["CODE_CATALOGUE"];
                     $code_rayon = $row["CODE_RAYON"];
                     $exemplaires = $row["EXEMPLAIRES"];
+                    $auteur = $row["AUTEUR"];
+                    $editeur = $row["EDITEUR"];
+                    $genre = $row["GENRE"];
                  
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
@@ -657,8 +684,8 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
       <div class="row">
 
           
-		<div class="col-lg-3"></div>
-        <div class="col-lg-6">
+		<div class="col-lg-1"></div>
+        <div class="col-lg-10">
 
           <div class="card">
             <div class="card-body">
@@ -666,35 +693,101 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 
               <!-- Vertical Form -->
 			  <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-					<div class="col-12 <?php echo (!empty($titre_livre_err)) ? 'has-error' : ''; ?>">
-						<label class="form-label">Titre</label>
-						<textarea name="titre_livre" class="form-control"><?php echo $titre_livre; ?></textarea>
-						<span class="help-block"><?php echo $titre_livre_err;?></span>
-					</div>
+          <div class="row"> 
+            <div class="col-6 <?php echo (!empty($titre_livre_err)) ? 'has-error' : ''; ?>">
+              <label class="form-label">Titre</label>
+              <textarea name="titre_livre" class="form-control"><?php echo $titre_livre; ?></textarea>
+              <span class="help-block"><?php echo $titre_livre_err;?></span>
+            </div>
+            <br>
+            <div class="col-6 <?php echo (!empty($code_catalogue_err)) ? 'has-error' : ''; ?>">
+              <label class="form-label">Code catalogue</label>
+              <textarea name="code_catalogue" class="form-control"><?php echo $code_catalogue; ?></textarea>
+              <span class="help-block"><?php echo $code_catalogue_err;?></span>
+            </div>
+          </div> 
 					<br>
-					<div class="col-12 <?php echo (!empty($code_catalogue_err)) ? 'has-error' : ''; ?>">
-						<label class="form-label">Code catalogue</label>
-						<textarea name="code_catalogue" class="form-control"><?php echo $code_catalogue; ?></textarea>
-						<span class="help-block"><?php echo $code_catalogue_err;?></span>
-					</div>
-					<br>
-					<div class="col-12 <?php echo (!empty($code_rayon_err)) ? 'has-error' : ''; ?>">
-						<label class="form-label">Code rayon</label>
-						<textarea name="code_rayon" class="form-control"><?php echo $code_rayon; ?></textarea>
-						<span class="help-block"><?php echo $code_rayon_err;?></span>
-					</div>
-					<br>
-          <div class="col-12 <?php echo (!empty($exemplaires_err)) ? 'has-error' : ''; ?>">
-            <label class="form-label">Nombre d'exemplaires</label>
-            <textarea name="exemplaires" class="form-control"><?php echo $exemplaires; ?></textarea>
-            <span class="help-block"><?php echo $exemplaires_err;?></span>
+          <div class="row"> 
+            <div class="col-6 <?php echo (!empty($code_rayon_err)) ? 'has-error' : ''; ?>">
+              <label class="form-label">Code rayon</label>
+              <textarea name="code_rayon" class="form-control"><?php echo $code_rayon; ?></textarea>
+              <span class="help-block"><?php echo $code_rayon_err;?></span>
+            </div>
+            <br>
+            <div class="col-6 <?php echo (!empty($exemplaires_err)) ? 'has-error' : ''; ?>">
+              <label class="form-label">Nombre d'exemplaires</label>
+              <textarea name="exemplaires" class="form-control"><?php echo $exemplaires; ?></textarea>
+              <span class="help-block"><?php echo $exemplaires_err;?></span>
+            </div>
+          </div>
+          <br>
+          <div class="row"> 
+            <div class="col-4 <?php echo (!empty($auteur_err)) ? 'has-error' : ''; ?>">
+              <label class="form-label">Auteur</label>
+              <select name="auteur" id="auteur" class="form-control" required>
+                <option value="<?php echo $auteur; ?>"><?php echo $auteur; ?></option>
+                  <?php
+                    require_once "config_anas.php";
+                              
+                    $sql = "SELECT * FROM auteur";
+
+                    if ($result = $link->query($sql)) {						
+                      if($result){
+                        foreach ($link->query($sql) as $row) {
+                  ?>     
+                          <option value="<?php echo $row['NOM_AUTEUR']; ?>"><?php echo $row['NOM_AUTEUR']; ?></option>
+                    <?php
+                    }}}
+                    ?>
+              </select>
+            </div>
+            <br>
+            <div class="col-4 <?php echo (!empty($editeur_err)) ? 'has-error' : ''; ?>">
+              <label class="form-label">Editeur</label>
+              <select name="editeur" id="editeur" class="form-control" required>
+                <option value="<?php echo $editeur; ?>"><?php echo $editeur; ?></option>
+                  <?php
+                    require_once "config_anas.php";
+                              
+                    $sql = "SELECT * FROM editeur";
+
+                    if ($result = $link->query($sql)) {						
+                      if($result){
+                        foreach ($link->query($sql) as $row) {
+                  ?>     
+                          <option value="<?php echo $row['NOM_EDITEUR']; ?>"><?php echo $row['NOM_EDITEUR']; ?></option>
+                    <?php
+                    }}}
+                    ?>
+              </select>
+            </div>
+            <br>
+            <div class="col-4 <?php echo (!empty($genre_err)) ? 'has-error' : ''; ?>">
+              <label class="form-label">Genre</label>
+              <select name="genre" id="genre" class="form-control" required>
+                <option value="<?php echo $genre; ?>"><?php echo $genre; ?></option>
+                  <?php
+                    require_once "config_anas.php";
+                              
+                    $sql = "SELECT * FROM genre";
+
+                    if ($result = $link->query($sql)) {						
+                      if($result){
+                        foreach ($link->query($sql) as $row) {
+                  ?>     
+                          <option value="<?php echo $row['LIBELLE_GENRE']; ?>"><?php echo $row['LIBELLE_GENRE']; ?></option>
+                    <?php
+                    }}}
+                    ?>
+              </select>
+            </div>
           </div>
           <br>
 					<div class="text-center">
 					  <input type="hidden" name="id" value="<?php echo $id; ?>"/>
-					  <a href="consulter_livre.php" class="btn btn-danger">Cancel</a>
-					  <button type="reset" class="btn btn-secondary">Reset</button>
-					  <button type="submit" class="btn btn-primary">Submit</button>
+					  <a href="consulter_livre.php" class="btn btn-danger" style="margin-top:30px">Cancel</a>
+					  <button type="reset" class="btn btn-secondary" style="margin-top:30px">Reset</button>
+					  <button type="submit" class="btn btn-primary" style="margin-top:30px">Submit</button>
 					</div>
 				</form>
 
@@ -702,7 +795,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
           </div>
 		  
         </div>
-		<div class="col-lg-3"></div>
+		<div class="col-lg-1"></div>
 		
       </div>
     </section>

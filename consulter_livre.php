@@ -542,8 +542,10 @@
                               echo "<th scope='col'>CODE CATALOGUE</th>";
                               echo "<th scope='col'>CODE RAYON</th>";
                               echo "<th scope='col'>EXEMPLAIRES</th>";
-                              echo "<th scope='col'>Modifier</th>";
-                              echo "<th scope='col'>Supprimer</th>";
+                              echo "<th scope='col'>ACTEUR</th>";
+                              echo "<th scope='col'>EDITEUR</th>";
+                              echo "<th scope='col'>GENRE</th>";
+                              echo "<th scope='col'>ACTION</th>";
                             echo "</tr>";
                           echo "</thead>";
           
@@ -556,11 +558,12 @@
                               echo "<td>" . $row['CODE_CATALOGUE'] . "</td>";
                               echo "<td>" . $row['CODE_RAYON'] . "</td>";
                               echo "<td>" . $row['EXEMPLAIRES'] . "</td>";
+                              echo "<td>" . $row['AUTEUR'] . "</td>";
+                              echo "<td>" . $row['EDITEUR'] . "</td>";
+                              echo "<td>" . $row['GENRE'] . "</td>";
             
                               echo "<td>";
                               echo "<a href='modifier_livre.php?id=". $row['ID_LIVRE'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                              echo "</td>";
-                              echo "<td>";
                               echo "<a href='delete_livre.php?id=". $row['ID_LIVRE'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                               echo "</td>";
                             echo "<tr>";  
