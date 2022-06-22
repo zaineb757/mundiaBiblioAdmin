@@ -3,8 +3,8 @@
 require_once "config.php";
 
 // Define variables and initialize with empty values
-$nom_user = $prenom_user = $username_user = $password_user = $adresse_user = $telephone_user = $date_adhesion = $date_naissance = $categorie_user = "";
-$nom_user_err = $prenom_user_err = $username_user_err = $password_user_err = $adresse_user_err = $telephone_user_err = $date_adhesion_err = $date_naissance_err = $categorie_user_err = "";
+$nom_user = $prenom_user = $username_user = $password_user = $adresse_user = $telephone_user  = "";
+$nom_user_err = $prenom_user_err = $username_user_err = $password_user_err = $adresse_user_err = $telephone_user_err  = "";
 
 // Processing form data when form is submitted
 if (isset($_POST["id"]) && !empty($_POST["id"])) {
@@ -62,33 +62,12 @@ if (isset($_POST["id"]) && !empty($_POST["id"])) {
         $telephone_user = $input_telephone_user;
     }
 
-    // Validate categorie
-    $input_categorie_user = trim($_POST["categorie_user"]);
-    if (empty($input_categorie_user)) {
-        $categorie_user_err = "Entrer la catégorie.";
-    } else {
-        $categorie_user = $input_categorie_user;
-    }
-    // Validate date d'adhesion
-    $input_date_adhesion = trim($_POST["date_adhesion"]);
-    if (empty($input_date_adhesion)) {
-        $date_adhesion_err = "Entrer la date d'adhésion.";
-    } else {
-        $date_adhesion = $input_date_adhesion;
-    }
-
-    // Validate date naissance
-    $input_date_naissance = trim($_POST["date_naissance"]);
-    if (empty($input_date_naissance)) {
-        $date_naissance_err = "Entrer la date d'adhésion.";
-    } else {
-        $date_naissance = $input_date_naissance;
-    }
+   
 
     // Check input errors before inserting in database
-    if (empty($nom_user_err) && empty($prenom_user_err) && empty($username_user_err) && empty($password_user_err) && empty($adresse_user_err)  && empty($telephone_user_err) && empty($categorie_user_err) && empty($date_adhesion_err) && empty($date_naissance_err)) {
+    if (empty($nom_user_err) && empty($prenom_user_err) && empty($username_user_err) && empty($password_user_err) && empty($adresse_user_err)  && empty($telephone_user_err) ) {
         // Prepare an update statement
-        $sql = "UPDATE userS SET nom_user=?, prenom_user=?,username_user=?, password_user=?,adresse_user=?,telephone_user=?,categorie_user=?,date_adhesion=?,date_naissance=? WHERE ID_user=?";
+        $sql = "UPDATE userS SET nom_user=?, prenom_user=?,username_user=?, password_user=?,adresse_user=?,telephone_user=? WHERE ID_user=?";
 
         //if($stmt = mysqli_prepare($link, $sql)){
         if ($stmt = $link->prepare($sql)) {
@@ -101,9 +80,6 @@ if (isset($_POST["id"]) && !empty($_POST["id"])) {
             $stmt->bindParam(4, $param_password_user, PDO::PARAM_STR);
             $stmt->bindParam(5, $param_adresse_user, PDO::PARAM_STR);
             $stmt->bindParam(6, $param_telephone_user, PDO::PARAM_STR);
-            $stmt->bindParam(7, $param_categorie_user, PDO::PARAM_STR);
-            $stmt->bindParam(8, $param_date_adhesion, PDO::PARAM_STR);
-            $stmt->bindParam(9, $param_date_naissance, PDO::PARAM_STR);
             $stmt->bindParam(10, $param_id, PDO::PARAM_INT);
 
             // Set parameters
@@ -113,9 +89,6 @@ if (isset($_POST["id"]) && !empty($_POST["id"])) {
             $param_password_user = $password_user;
             $param_adresse_user = $adresse_user;
             $param_telephone_user = $telephone_user;
-            $param_categorie_user = $categorie_user;
-            $param_date_adhesion = $date_adhesion;
-            $param_date_naissance = $date_naissance;
             $param_id = $id;
 
             // Attempt to execute the prepared statement
@@ -173,9 +146,6 @@ if (isset($_POST["id"]) && !empty($_POST["id"])) {
                     $prenom_user = $row["PRENOM_USER"];
                     $adresse_user = $row["ADRESSE_USER"];
                     $telephone_user = $row["TELEPHONE_USER"];
-                    $categorie_user = $row["CATEGORIE_USER"];
-                    $date_adhesion = $row["DATE_ADHESION"];
-                    $date_naissance = $row["DATE_NAISSANCE"];
                 } else {
                     // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
@@ -207,7 +177,7 @@ if (isset($_POST["id"]) && !empty($_POST["id"])) {
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Abonnés</title>
+    <title>bibliothécaire</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -525,21 +495,6 @@ if (isset($_POST["id"]) && !empty($_POST["id"])) {
                                     <label>telephone</label>
                                     <textarea name="telephone_user" class="form-control"><?php echo $telephone_user; ?></textarea>
                                     <span class="help-block"><?php echo $telephone_user_err; ?></span>
-                                </div>
-                                <div class="form-group <?php echo (!empty($categorie_user_err)) ? 'has-error' : ''; ?>">
-                                    <label>Catégorie</label>
-                                    <textarea name="categorie_user" class="form-control"><?php echo $categorie_user; ?></textarea>
-                                    <span class="help-block"><?php echo $categorie_user_err; ?></span>
-                                </div>
-                                <div class="form-group <?php echo (!empty($date_adhesion_err)) ? 'has-error' : ''; ?>">
-                                    <label>Date D'adhesion</label>
-                                    <textarea name="date_adhesion" class="form-control"><?php echo $date_adhesion; ?></textarea>
-                                    <span class="help-block"><?php echo $date_adhesion_err; ?></span>
-                                </div>
-                                <div class="form-group <?php echo (!empty($date_naissance_err)) ? 'has-error' : ''; ?>">
-                                    <label>Date De naissance</label>
-                                    <textarea name="date_naissance" class="form-control"><?php echo $date_naissance; ?></textarea>
-                                    <span class="help-block"><?php echo $date_naissance_err; ?></span>
                                 </div>
                                 <input type="hidden" name="id" value="<?php echo $id; ?>" />
                                 <input type="submit" class="btn btn-primary" value="Submit">

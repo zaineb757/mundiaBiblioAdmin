@@ -36,9 +36,7 @@ if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
                 $password_user = $row['PASSWORD_USER'];
                 $adresse_user = $row['ADRESSE_USER'];
                 $telephone_user = $row['TELEPHONE_USER'];
-                $date_adhesion = $row['DATE_ADHESION'];
-                $date_naissance_user = $row['DATE_NAISSANCE'];
-                $categorie_user = $row['CATEGORIE_USER'];
+           
             } else {
                 // URL doesn't contain valid id parameter. Redirect to error page
                 header("location: error.php");
@@ -385,20 +383,6 @@ if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
                                 <p class="form-control-static"><?php echo $telephone_user; ?></p>
                             </div>
 
-                            <div class="form-group">
-                                <label class="fw-bold">Date d'adhésion</label>
-                                <p class="form-control-static"><?php echo $date_adhesion; ?></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="fw-bold">Date de Naissance</label>
-                                <p class="form-control-static"><?php echo $date_naissance_user; ?></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="fw-bold">Catégorie</label>
-                                <p class="form-control-static"><?php echo $categorie_user; ?></p>
-                            </div>
 
                             <p><a href="index.php" class="btn btn-primary">Back</a></p>
                         </div>

@@ -1,96 +1,60 @@
 <?php
 // Include config file
-require_once "config.php";
+require_once "../config.php";
 
 // Define variables and initialize with empty values
-$nom_user = $prenom_user = $username_user = $password_user = $adresse_user = $telephone_user =  "";
-$nom_user_err = $prenom_user_err = $username_user_err = $password_user_err = $adresse_user_err = $telephone_user_err = "";
+$nom_auteur = $prenom_auteur = "";
+$nom_auteur_err = $prenom_auteur_err = "";
 
 // Processing form data when form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST["id"]) && !empty($_POST["id"])) {
+    // Get hidden input value
+    $id = $_POST["id"];
+
     // Validate name
-    $input_nom_user = trim($_POST["nom_user"]);
-    if (empty($input_nom_user)) {
-        $nom_user_err = "Please enter a name.";
-        //} elseif(!filter_var($input_nom_user, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
-        $nom_user_err = "Please enter a valid name.";
+    $input_nom_auteur = trim($_POST["nom_auteur"]);
+    if (empty($input_nom_auteur)) {
+        $nom_auteur_err = "Please enter a name.";
+        //} elseif(!filter_var($input_nom_auteur, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
+        $nom_auteur_err = "Please enter a valid name.";
     } else {
-        $nom_user = $input_nom_user;
+        $nom_auteur = $input_nom_auteur;
     }
 
     // Validate prenom
-    $input_prenom_user = trim($_POST["prenom_user"]);
-    if (empty($input_prenom_user)) {
-        $prenom_user_err = "Please enter an nom_user.";
+    $input_prenom_auteur = trim($_POST["prenom_auteur"]);
+    if (empty($input_prenom_auteur)) {
+        $prenom_auteur_err = "Please enter an nom_auteur.";
     } else {
-        $prenom_user = $input_prenom_user;
+        $prenom_auteur = $input_prenom_auteur;
     }
 
-    // Validate username
-    $input_username_user = trim($_POST["username_user"]);
-    if (empty($input_username_user)) {
-        $username_user_err = "Entrer le nom d'utilisateur du nouveau l'abonné.";
-    } else {
-        $username_user = $input_username_user;
-    }
-
-
-    // Validate password
-    $input_password_user = trim($_POST["password_user"]);
-    if (empty($input_password_user)) {
-        $password_user_err = "Entrer le mot de passe du nouveau abonné.";
-    } else {
-        $password_user = $input_password_user;
-    }
-
-    // Validate adresse
-    $input_adresse_user = trim($_POST["adresse_user"]);
-    if (empty($input_adresse_user)) {
-        $adresse_user_err = "Entrer le l'adresse de l'abonné.";
-    } else {
-        $adresse_user = $input_adresse_user;
-    }
-
-    // Validate telephone
-    $input_telephone_user = trim($_POST["telephone_user"]);
-    if (empty($input_telephone_user)) {
-        $telephone_user_err = "Entrer le l'telephone de l'abonné.";
-    } else {
-        $telephone_user = $input_telephone_user;
-    }
+  
 
     // Check input errors before inserting in database
-    if (empty($nom_user_err) && empty($prenom_user_err) && empty($username_user_err) && empty($password_user_err) && empty($adresse_user_err)  && empty($telephone_user_err) ) {
-        // Prepare an insert statement
-
-        $sql = "insert into users (id_user,nom_user,prenom_user,username_user,password_user,adresse_user,telephone_user) Values(user_seq.nextval,?,?,?,?,?,?)";
+    if (empty($nom_auteur_err) && empty($prenom_auteur_err) ) {
+        // Prepare an update statement
+        $sql = "UPDATE auteur SET nom_auteur=?, prenom_auteur=? WHERE ID_auteur=?";
 
         //if($stmt = mysqli_prepare($link, $sql)){
         if ($stmt = $link->prepare($sql)) {
             // Bind variables to the prepared statement as parameters
-            //mysqli_stmt_bind_param($stmt, "sss", $param_name, $param_adresse, $param_salary);
-            $stmt->bindParam(1, $param_nom_user, PDO::PARAM_STR);
-            $stmt->bindParam(2, $param_prenom_user, PDO::PARAM_STR);
-            $stmt->bindParam(3, $param_username_user, PDO::PARAM_STR);
-            $stmt->bindParam(4, $param_password_user, PDO::PARAM_STR);
-            $stmt->bindParam(5, $param_adresse_user, PDO::PARAM_STR);
-            $stmt->bindParam(6, $param_telephone_user, PDO::PARAM_STR);
-            //$stmt->bindParam(8, ':param_date_adhesion', $param_date_adhesion->format('Y-m-d h:i:s'));
+            //mysqli_stmt_bind_param($stmt, "sssi", $param_name, $param_address, $param_salary, $param_id);
 
+            $stmt->bindParam(1, $param_nom_auteur, PDO::PARAM_STR);
+            $stmt->bindParam(2, $param_prenom_auteur, PDO::PARAM_STR);
+            $stmt->bindParam(3, $param_id, PDO::PARAM_INT);
 
             // Set parameters
-            $param_nom_user = $nom_user;
-            $param_prenom_user = $prenom_user;
-            $param_username_user = $username_user;
-            $param_password_user = $password_user;
-            $param_adresse_user = $adresse_user;
-            $param_telephone_user = $telephone_user;
+            $param_nom_auteur = $nom_auteur;
+            $param_prenom_auteur = $prenom_auteur;
+            $param_id = $id;
 
             // Attempt to execute the prepared statement
             //if(mysqli_stmt_execute($stmt)){
             if ($stmt->execute()) {
-                // Records created successfully. Redirect to landing page
-                header("location: index_user.php");
+                // Records updated successfully. Redirect to landing page
+                header("location: index_auteur.php");
                 exit();
             } else {
                 echo "Something went wrong. Please try again later.";
@@ -104,6 +68,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Close connection
     //mysqli_close($link);
+} else {
+    // Check existence of id parameter before processing further
+    if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
+        // Get URL parameter
+        $id =  trim($_GET["id"]);
+
+        // Prepare a select statement
+        $sql = "SELECT * FROM auteur WHERE ID_auteur = ?";
+        //if($stmt = mysqli_prepare($link, $sql)){
+        if ($stmt = $link->prepare($sql)) {
+            // Bind variables to the prepared statement as parameters
+            //mysqli_stmt_bind_param($stmt, "i", $param_id);
+            $stmt->bindParam(1, $param_id, PDO::PARAM_INT);
+
+            // Set parameters
+            $param_id = $id;
+
+            // Attempt to execute the prepared statement
+            //if(mysqli_stmt_execute($stmt)){
+            if ($stmt->execute()) {
+                //$result = mysqli_stmt_get_result($stmt);
+                $result = $stmt->fetchAll();
+
+                //if(mysqli_num_rows($result) == 1){
+                if (count($result) == 1) {
+                    /* Fetch result row as an associative array. Since the result set
+                    contains only one row, we don't need to use while loop */
+                    //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                    $row = $result[0];
+
+                    // Retrieve individual field value
+                    $nom_auteur = $row["NOM_AUTEUR"];
+                    $prenom_auteur = $row["PRENOM_AUTEUR"];
+                } else {
+                    // URL doesn't contain valid id. Redirect to error page
+                    header("location: error.php");
+                    exit();
+                }
+            } else {
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+        }
+
+        // Close statement
+        //mysqli_stmt_close($stmt);
+        $stmt->closeCursor(); //PDO close
+
+        // Close connection
+        //mysqli_close($link);
+    } else {
+        // URL doesn't contain id parameter. Redirect to error page
+        header("location: error.php");
+        exit();
+    }
 }
 ?>
 
@@ -114,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Users</title>
+    <title>Auteurs</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -152,9 +170,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="./index_user.php" class="logo d-flex align-items-center">
+            <a href="index.html" class="logo d-flex align-items-center">
                 <img src="assets/img/logo.png" alt="">
-                <span class="d-none d-lg-block">Ajouter bibliothécaire</span>
+                <span class="d-none d-lg-block">Modifier un Auteurs</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
@@ -383,7 +401,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>bibliothécaires</h1>
+            <h1>Auteurs</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -399,45 +417,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Ajouter un Nouveau bibliothécaire</h5>
-                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-
-                                <div class="form-group <?php echo (!empty($nom_user_err)) ? 'has-error' : ''; ?>">
+                            <h5 class="card-title">Modifier un Auteur</h5>
+                            <!-- Horizontal Form -->
+                            <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
+                                <div class="form-group <?php echo (!empty($nom_auteur_err)) ? 'has-error' : ''; ?>">
                                     <label>Nom</label>
-                                    <input type="text" name="nom_user" class="form-control" value="<?php echo $nom_user; ?>">
-                                    <span class="help-block"><?php echo $nom_user_err; ?></span>
+                                    <input type="text" name="nom_auteur" class="form-control" value="<?php echo $nom_auteur; ?>">
+                                    <span class="help-block"><?php echo $nom_auteur_err; ?></span>
                                 </div>
-                                <div class="form-group <?php echo (!empty($prenom_user_err)) ? 'has-error' : ''; ?>">
+                                <div class="form-group <?php echo (!empty($prenom_auteur_err)) ? 'has-error' : ''; ?>">
                                     <label>Prenom</label>
-                                    <textarea name="prenom_user" class="form-control"><?php echo $prenom_user; ?></textarea>
-                                    <span class="help-block"><?php echo $prenom_user_err; ?></span>
+                                    <textarea name="prenom_auteur" class="form-control"><?php echo $prenom_auteur; ?></textarea>
+                                    <span class="help-block"><?php echo $prenom_auteur_err; ?></span>
                                 </div>
-                                <div class="form-group <?php echo (!empty($username_user_err)) ? 'has-error' : ''; ?>">
-                                    <label>username</label>
-                                    <textarea name="username_user" class="form-control"><?php echo $username_user; ?></textarea>
-                                    <span class="help-block"><?php echo $username_user_err; ?></span>
-                                </div>
-                                <div class="form-group <?php echo (!empty($password_user_err)) ? 'has-error' : ''; ?>">
-                                    <label>Password</label>
-                                    <textarea name="password_user" class="form-control"><?php echo $password_user; ?></textarea>
-                                    <span class="help-block"><?php echo $password_user_err; ?></span>
-                                </div>
-                                <div class="form-group <?php echo (!empty($adresse_user_err)) ? 'has-error' : ''; ?>">
-                                    <label>adresse</label>
-                                    <textarea name="adresse_user" class="form-control"><?php echo $adresse_user; ?></textarea>
-                                    <span class="help-block"><?php echo $adresse_user_err; ?></span>
-                                </div>
-
-                                <div class="form-group <?php echo (!empty($telephone_user_err)) ? 'has-error' : ''; ?>">
-                                    <label>telephone</label>
-                                    <textarea name="telephone_user" class="form-control"><?php echo $telephone_user; ?></textarea>
-                                    <span class="help-block"><?php echo $telephone_user_err; ?></span>
-                                </div>
-                              
-                                <br>
+                                <input type="hidden" name="id" value="<?php echo $id; ?>" />
                                 <input type="submit" class="btn btn-primary" value="Submit">
-                                <button type="reset" class="btn btn-secondary">Reset</button>
-                                <a href="index_user.php" class="btn btn-danger">Cancel</a>
+                                <a href="index_auteur.php" class="btn btn-default">Cancel</a>
                             </form>
 
                         </div>

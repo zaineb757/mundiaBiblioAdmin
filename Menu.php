@@ -27,25 +27,10 @@
 
             </ul>
         </li><!-- End Components Nav -->
-        <li class="nav-item">
-            <a href="users/index_user.php" class="nav-link collapsed">
-                <i class="bi bi-menu-button-wide"></i><span>bibliothécaires</span>
-            </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-
-            </ul>
-        </li><!-- End Components Nav -->
+       
         <li class="nav-item">
             <a href="pret/index_pret.php" class="nav-link collapsed">
                 <i class="bi bi-menu-button-wide"></i><span>Préts</span>
-            </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-
-            </ul>
-        </li><!-- End Components Nav -->
-        <li class="nav-item">
-            <a href="auteur/index.php" class="nav-link collapsed">
-                <i class="bi bi-menu-button-wide"></i><span>Auteurs</span>
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 

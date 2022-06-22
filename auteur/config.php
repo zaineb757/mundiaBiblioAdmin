@@ -20,3 +20,5 @@ $link = new PDO("oci:dbname=".DB_SERVER,DB_USERNAME,DB_PASSWORD);
 } catch (PDOException $e) {
     echo ($e->getMessage());
 }
+?>
+

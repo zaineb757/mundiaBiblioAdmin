@@ -254,7 +254,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="../logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -318,9 +318,6 @@
                   echo "<th>Password</th>";
                   echo "<th>Adresse</th>";
                   echo "<th>Téléphone</th>";
-                  echo "<th>Date adhésion</th>";
-                  echo "<th>Date naissance</th>";
-                  echo "<th>Catégorie</th>";
                   echo "<th>Action</th>";
                   echo "</tr>";
                   echo "</thead>";
@@ -335,9 +332,6 @@
                     echo "<td>" . $row['PASSWORD_USER'] . "</td>";
                     echo "<td>" . $row['ADRESSE_USER'] . "</td>";
                     echo "<td>" . $row['TELEPHONE_USER'] . "</td>";
-                    echo "<td>" . $row['DATE_ADHESION'] . "</td>";
-                    echo "<td>" . $row['DATE_NAISSANCE'] . "</td>";
-                    echo "<td>" . $row['CATEGORIE_USER'] . "</td>";
 
                     echo "<td>";
                     echo "<a href='read_user.php?id=" . $row['ID_USER'] . "' title='View Record' data-toggle='tooltip'><i class='bi bi-eye'></i></a>";
