@@ -520,68 +520,72 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Base de données</h5>
-              <p>Le tableau suivant représente la liste des livres classés selon leur Id, titre, code catalogue et code rayon, avec la possibilité de chercher, modifier et supprimer.</p>
-				<br>
-				<div class="text-center">
-					<a href="ajouter_livre.php" class="btn btn-primary">Ajouter Livre</a>
-				</div>
-				<?php
-                    // Include config file
-                    require_once "config.php";
-										
-                    // Attempt select query execution
-                    $sql = "SELECT * FROM livre";
-			
-                    //if($result = mysqli_query($link, $sql)){
-                    if ($result = $link->query($sql)) {
-						
-                        //if(mysqli_num_rows($result) > 0){							
-                          if($result){
-                            echo "<table class='table datatable'>";
-                                echo "<thead>";
-                                    echo "<tr>";
-                                        echo "<th scope='col'>ID</th>";
-                                        echo "<th scope='col'>TITRE</th>";
-										echo "<th scope='col'>CODE CATALOGUE</th>";
-                                        echo "<th scope='col'>CODE RAYON</th>";
-										echo "<th scope='col'>Modifier</th>";
-										echo "<th scope='col'>Supprimer</th>";
-                                    echo "</tr>";
-                                echo "</thead>";
-								
-                                echo "<tbody>";
-                                //while($row = mysqli_fetch_array($result)){
-                               foreach ($link->query($sql) as $row) {
-                                    echo "<tr>";
-										echo "<th scope='row'>" . $row['ID_LIVRE'] . "</th>";
-										echo "<td>" . $row['TITRE_LIVRE'] . "</td>";
-										echo "<td>" . $row['CODE_CATALOGUE'] . "</td>";
-										echo "<td>" . $row['CODE_RAYON'] . "</td>";
-										
-										echo "<td>";
-										echo "<a href='modifier_livre.php?id=". $row['ID_LIVRE'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-										echo "</td>";
-										echo "<td>";
-										echo "<a href='delete_livre.php?id=". $row['ID_LIVRE'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
-										echo "</td>";
-                                    echo "<tr>";  
-                                }
-                                echo "</tbody>";                            
-                            echo "</table>";
-                            // Free result set
-                            //mysqli_free_result($result);
-                            $result->closeCursor(); //PDO close
-                        } else{
-                          echo "<p class='lead'><em>No records were found.</em></p>";
-                        }
+              <p>Le tableau suivant représente la liste des livres selon leur Id, titre, code catalogue, code rayon et le nombre des exemplaires, avec la possibilité de chercher, modifier et supprimer.</p>
+              <br>
+              <div class="text-center">
+                <a href="ajouter_livre.php" class="btn btn-primary">Ajouter Livre</a>
+              </div>
+              <?php
+                // Include config file
+                require_once "config_anas.php";
+                
+                // Attempt select query execution
+                $sql = "SELECT * FROM livre ORDER BY id_livre ASC";
+  
+                if ($result = $link->query($sql)) {						
+                      if($result){
+                        echo "<table class='table datatable'>";
+                          echo "<thead>";
+                            echo "<tr>";
+                              echo "<th scope='col'>ID</th>";
+                              echo "<th scope='col'>TITRE</th>";
+                              echo "<th scope='col'>CODE CATALOGUE</th>";
+                              echo "<th scope='col'>CODE RAYON</th>";
+                              echo "<th scope='col'>ACTEUR</th>";
+                              echo "<th scope='col'>EDITEUR</th>";
+                              echo "<th scope='col'>GENRE</th>";
+                              echo "<th scope='col'>EXEMPLAIRES</th>";
+                              echo "<th scope='col'>STOCK</th>";
+                              echo "<th scope='col'>ACTION</th>";
+                            echo "</tr>";
+                          echo "</thead>";
+          
+                          echo "<tbody>";
+
+                          foreach ($link->query($sql) as $row) {
+                            echo "<tr>";
+                              echo "<td scope='row'>" . $row['ID_LIVRE'] . "</td>";
+                              echo "<td>" . $row['TITRE_LIVRE'] . "</td>";
+                              echo "<td>" . $row['CODE_CATALOGUE'] . "</td>";
+                              echo "<td>" . $row['CODE_RAYON'] . "</td>";
+                              echo "<td>" . $row['AUTEUR'] . "</td>";
+                              echo "<td>" . $row['EDITEUR'] . "</td>";
+                              echo "<td>" . $row['GENRE'] . "</td>";
+                              echo "<td>" . $row['EXEMPLAIRES'] . "</td>";
+
+                              if($row['STOCK']>0)
+                                echo "<td>" . $row['STOCK'] . "</td>";
+                              else
+                                echo "<td style='color:red;'>" . $row['STOCK'] . "</td>";
+            
+                              echo "<td>";
+                              echo "<a style='margin-right:10px;' href='modifier_livre.php?id=". $row['ID_LIVRE'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                              echo "<a style='margin-left:10px;' href='delete_livre.php?id=". $row['ID_LIVRE'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                              echo "</td>";
+                            echo "<tr>";  
+                          }
+                          echo "</tbody>";                            
+                        echo "</table>";
+
+                        $result->closeCursor(); //PDO close
                     } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                      echo "<p class='lead'><em>No records were found.</em></p>";
                     }
- 
-                    // Close connection
-                    //mysqli_close($link);
-                ?>
-				
+                } else{
+                    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                }
+                
+              ?>
             </div>
           </div>
 
@@ -617,8 +621,8 @@
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
 
-  <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
 
 </body>
 

@@ -25,7 +25,7 @@ create table auteur(
 
 create table editeur(
 	id_editeur Number(10) not null,
-	type_editeur Varchar2(25),
+	nom_editeur Varchar2(25),
 	prenom_auteur Varchar2(25),
 	PRIMARY KEY(id_editeur)
 );
