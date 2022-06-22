@@ -1,0 +1,39 @@
+CREATE SEQUENCE livre_seq START WITH 1;
+
+create table livre(
+	id_livre Number(10) DEFAULT livre_seq.nextval NOT NULL,
+	titre_livre Varchar(20) NOT NULL,
+	code_catalogue Varchar(20) NOT NULL,
+	code_rayon Varchar(20) NOT NULL,
+	disponible Number(10) NOT NULL,
+	id_auteur Number(10),
+	id_genre Number(10),
+	id_editeur Number(10),
+	FOREIGN KEY(id_auteur) REFERENCES auteur(id_auteur),
+	FOREIGN KEY(id_genre) REFERENCES genre(id_genre),
+	FOREIGN KEY(id_editeur) REFERENCES editeur(id_editeur)
+);
+
+ALTER TABLE livre ADD (
+  CONSTRAINT livre_pk PRIMARY KEY (id_livre)
+);
+
+
+
+CREATE SEQUENCE pret_seq START WITH 1;
+
+create table pret(
+	id_pret Number(10) DEFAULT pret_seq.nextval NOT NULL,
+	nom VARCHAR(20) NOT NULL,
+	phone Number(10) NOT NULL,
+	debut DATE,
+	fin DATE,
+	email VARCHAR(50) NOT NULL,
+	action VARCHAR(10) NOT NULL,
+	id_livre Number(10),
+	FOREIGN KEY(id_livre) REFERENCES livre(id_livre)
+);
+
+ALTER TABLE pret ADD (
+  CONSTRAINT pret_pk PRIMARY KEY (id_pret)
+);

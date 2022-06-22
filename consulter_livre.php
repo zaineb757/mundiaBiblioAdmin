@@ -520,7 +520,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Base de données</h5>
-              <p>Le tableau suivant représente la liste des livres classés selon leur Id, titre, code catalogue et code rayon, avec la possibilité de chercher, modifier et supprimer.</p>
+              <p>Le tableau suivant représente la liste des livres selon leur Id, titre, code catalogue, code rayon et le nombre des exemplaires, avec la possibilité de chercher, modifier et supprimer.</p>
               <br>
               <div class="text-center">
                 <a href="ajouter_livre.php" class="btn btn-primary">Ajouter Livre</a>
@@ -541,6 +541,7 @@
                               echo "<th scope='col'>TITRE</th>";
                               echo "<th scope='col'>CODE CATALOGUE</th>";
                               echo "<th scope='col'>CODE RAYON</th>";
+                              echo "<th scope='col'>EXEMPLAIRES</th>";
                               echo "<th scope='col'>Modifier</th>";
                               echo "<th scope='col'>Supprimer</th>";
                             echo "</tr>";
@@ -554,6 +555,7 @@
                               echo "<td>" . $row['TITRE_LIVRE'] . "</td>";
                               echo "<td>" . $row['CODE_CATALOGUE'] . "</td>";
                               echo "<td>" . $row['CODE_RAYON'] . "</td>";
+                              echo "<td>" . $row['EXEMPLAIRES'] . "</td>";
             
                               echo "<td>";
                               echo "<a href='modifier_livre.php?id=". $row['ID_LIVRE'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
