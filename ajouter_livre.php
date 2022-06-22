@@ -4,15 +4,12 @@
   require_once "config_anas.php";
   
   // Define variables and initialize with empty values
-  $titre_livre = $code_catalogue = $code_rayon = $exemplaires = $stock = $auteur = $editeur = $genre = "";
-  
-  // Processing form data when form is submitted
-  if(isset($_POST["id"]) && !empty($_POST["id"])){
+  $titre_livre = $code_catalogue = $code_rayon = $exemplaires = $auteur = $editeur = $genre = "";
 
-    // Get hidden input value
-    $id = $_POST["id"];
+  // Processing form data when form is submitted
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
 	
-	  $titre_livre = trim($_POST["titre_livre"]);
+    $titre_livre = trim($_POST["titre_livre"]);
     
     $code_catalogue = trim($_POST["code_catalogue"]);
 
@@ -20,123 +17,33 @@
 
     $exemplaires = trim($_POST["exemplaires"]);
 
-    $stock = trim($_POST["stock"]);
-
     $auteur = trim($_POST["auteur"]);
 
     $editeur = trim($_POST["editeur"]);
 
     $genre = trim($_POST["genre"]);
     
-    
-    // Prepare an update statement
-    $sql = "UPDATE livre SET titre_livre=?, code_catalogue=?, code_rayon=?, exemplaires=?, stock=?, auteur=?, editeur=?, genre=? WHERE ID_LIVRE=? "; 
-      
-    //if($stmt = mysqli_prepare($link, $sql)){
+
+    // Prepare an insert statement
+    $sql = "INSERT INTO livre VALUES (livre_seq.nextval, '$titre_livre', '$code_catalogue', '$code_rayon', '$exemplaires', '$exemplaires', '$auteur','$editeur','$genre')";
+
     if($stmt = $link->prepare($sql)){
 
-      // Bind variables to the prepared statement as parameters
-      $stmt->bindParam(1, $param_titre_livre, PDO::PARAM_STR);
-      $stmt->bindParam(2, $param_code_catalogue, PDO::PARAM_STR);
-      $stmt->bindParam(3, $param_code_rayon, PDO::PARAM_STR);
-      $stmt->bindParam(4, $param_exemplaires, PDO::PARAM_INT);
-      $stmt->bindParam(5, $param_stock, PDO::PARAM_INT);
-      $stmt->bindParam(6, $param_auteur, PDO::PARAM_STR);
-      $stmt->bindParam(7, $param_editeur, PDO::PARAM_STR);
-      $stmt->bindParam(8, $param_genre, PDO::PARAM_STR);
-      $stmt->bindParam(9, $param_id, PDO::PARAM_INT);
-      
-      // Set parameters
-      $param_titre_livre = $titre_livre;
-      $param_code_catalogue= $code_catalogue;
-      $param_code_rayon = $code_rayon;
-      $param_exemplaires = $exemplaires;
-      $param_stock= $stock;
-      $param_auteur = $auteur;
-      $param_editeur = $editeur;
-      $param_genre = $genre;
-      $param_id = $id;
-      
       // Attempt to execute the prepared statement
-      if($stmt->execute()){  
+      if($stmt->execute()){
 
-          // Records updated successfully. Redirect to landing page
+          // Records created successfully. Redirect to landing page
           header("location: consulter_livre.php");
           exit();
 
       }else
-          echo "Something went wrong. Please try again later.";
+        echo "Something went wrong. Please try again later.";
 
     }
 
     $stmt->closeCursor(); //PDO close
-
-}else{
-
-  // Check existence of id parameter before processing further
-  if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
-
-    // Get URL parameter
-    $id =  trim($_GET["id"]);
-    
-    // Prepare a select statement
-    $sql = "SELECT * FROM livre WHERE ID_LIVRE = ?";
-
-    if($stmt = $link->prepare($sql)){
-
-        // Bind variables to the prepared statement as parameters
-        $stmt->bindParam(1, $param_id, PDO::PARAM_INT);
-        
-        // Set parameters
-        $param_id = $id;
-        
-        // Attempt to execute the prepared statement
-        if($stmt->execute()){ 
-
-          $result = $stmt->fetchAll();
-
-          if(count($result) == 1){
-
-            /* Fetch result row as an associative array. Since the result set
-            contains only one row, we don't need to use while loop */
-            //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-            $row = $result[0];
-            
-            // Retrieve individual field value
-            $titre_livre = $row["TITRE_LIVRE"];
-            $code_catalogue = $row["CODE_CATALOGUE"];
-            $code_rayon = $row["CODE_RAYON"];
-            $exemplaires = $row["EXEMPLAIRES"];
-            $stock = $row["STOCK"];
-            $auteur = $row["AUTEUR"];
-            $editeur = $row["EDITEUR"];
-            $genre = $row["GENRE"];
-            
-          }else{
-
-            // URL doesn't contain valid id. Redirect to error page
-            header("location: error.php");
-            exit();
-
-          }
-          
-        }else
-          echo "Oops! Something went wrong. Please try again later.";
-
-    }
-      
-    $stmt->closeCursor(); //PDO close
-
-  }else{
-
-    // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
-    exit();
-
-  }
 
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -500,7 +407,7 @@
       </li><!-- End Components Nav -->
 
       <li class="nav-item">
-        <a class="nav-link" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#" class="active">
+        <a class="nav-link" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-journal-text"></i><span>Livres</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="forms-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
@@ -510,7 +417,7 @@
             </a>
           </li>
           <li>
-            <a href="ajouter_livre.php">
+            <a href="ajouter_livre.php" class="active">
               <i class="bi bi-circle"></i><span>Ajouter livre</span>
             </a>
           </li>
@@ -639,127 +546,111 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Modifier livre</h1>
+      <h1>Ajouter livre</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
           <li class="breadcrumb-item">Livres</li>
+          <li class="breadcrumb-item active">Ajouter livre</li>
         </ol>
       </nav>
+      <br>
     </div><!-- End Page Title -->
+    
     <section class="section">
-      <div class="row">
-
-          
-		<div class="col-lg-1"></div>
+      <div class="row"> 
+      <div class="col-lg-1"></div>
         <div class="col-lg-10">
-
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Modifiez le formulaire</h5>
+              <h5 class="card-title">Remplissez le formulaire</h5>
 
-              <!-- Vertical Form -->
-			  <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-          <div class="row"> 
-            <div class="col-6">
-              <label class="form-label">Titre</label>
-              <textarea name="titre_livre" class="form-control" required><?php echo $titre_livre; ?></textarea>
-            </div>
-            <div class="col-6">
-              <label class="form-label">Code catalogue</label>
-              <textarea name="code_catalogue" class="form-control" required><?php echo $code_catalogue; ?></textarea>
-            </div>
-          </div> 
-					<br>
-          <div class="row"> 
-            <div class="col-6">
-              <label class="form-label">Code rayon</label>
-              <textarea name="code_rayon" class="form-control" required><?php echo $code_rayon; ?></textarea>
-            </div>
-            <div class="col-3">
-              <label class="form-label">Exemplaires</label>
-              <textarea name="exemplaires" class="form-control" required><?php echo $exemplaires; ?></textarea>
-            </div>
-            <div class="col-3">
-              <label class="form-label">Stock</label>
-              <textarea name="stock" class="form-control" required><?php echo $stock; ?></textarea>
-            </div>
-          </div>
-          <br>
-          <div class="row"> 
-            <div class="col-4">
-              <label class="form-label">Auteur</label>
-              <select name="auteur" id="auteur" class="form-control" required>
-                <option value="<?php echo $auteur; ?>"><?php echo $auteur; ?></option>
-                  <?php
-                    require_once "config_anas.php";
-                              
-                    $sql = "SELECT * FROM auteur";
+              <!-- Form -->
+              <form class="row g-3" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                <div class="col-6">
+                  <label class="form-label">Titre</label>
+                  <input name="titre_livre" class="form-control" required><?php echo $titre_livre; ?></input>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Code catalogue</label>
+                  <input name="code_catalogue" class="form-control" required><?php echo $code_catalogue; ?></input>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Code rayon</label>
+                  <input name="code_rayon" class="form-control" required><?php echo $code_rayon; ?></input>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Nombre d'exemplaires</label>
+                  <input type="number" name="exemplaires" class="form-control" required><?php echo $exemplaires; ?></input>
+                </div>
+                <div class="col-4">
+                  <label class="form-label">Auteur</label>
+                  <select name="auteur" id="auteur" class="form-control" required>
+                    <option value="">Liste des auteurs :</option>
+                      <?php
+                        require_once "config_anas.php";
+                                  
+                        $sql = "SELECT * FROM auteur";
 
-                    if ($result = $link->query($sql)) {						
-                      if($result){
-                        foreach ($link->query($sql) as $row) {
-                  ?>     
-                          <option value="<?php echo $row['NOM_AUTEUR']; ?>"><?php echo $row['NOM_AUTEUR']; ?></option>
-                    <?php
-                    }}}
-                    ?>
-              </select>
-            </div>
-            <div class="col-4">
-              <label class="form-label">Editeur</label>
-              <select name="editeur" id="editeur" class="form-control" required>
-                <option value="<?php echo $editeur; ?>"><?php echo $editeur; ?></option>
-                  <?php
-                    require_once "config_anas.php";
-                              
-                    $sql = "SELECT * FROM editeur";
+                        if ($result = $link->query($sql)) {						
+                          if($result){
+                            foreach ($link->query($sql) as $row) {
+                      ?>     
+                              <option value="<?php echo $row['NOM_AUTEUR']; ?>"><?php echo $row['NOM_AUTEUR']; ?></option>
+                        <?php
+                        }}}
+                        ?>
+                  </select>
+                </div>
+                <div class="col-4 <?php echo (!empty($editeur_err)) ? 'has-error' : ''; ?>">
+                  <label class="form-label">Editeur</label>
+                  <select name="editeur" id="editeur" class="form-control" required>
+                    <option value="">Liste des editeurs :</option>
+                      <?php
+                        require_once "config_anas.php";
+                                  
+                        $sql = "SELECT * FROM editeur";
 
-                    if ($result = $link->query($sql)) {						
-                      if($result){
-                        foreach ($link->query($sql) as $row) {
-                  ?>     
-                          <option value="<?php echo $row['NOM_EDITEUR']; ?>"><?php echo $row['NOM_EDITEUR']; ?></option>
-                    <?php
-                    }}}
-                    ?>
-              </select>
-            </div>
-            <div class="col-4">
-              <label class="form-label">Genre</label>
-              <select name="genre" id="genre" class="form-control" required>
-                <option value="<?php echo $genre; ?>"><?php echo $genre; ?></option>
-                  <?php
-                    require_once "config_anas.php";
-                              
-                    $sql = "SELECT * FROM genre";
+                        if ($result = $link->query($sql)) {						
+                          if($result){
+                            foreach ($link->query($sql) as $row) {
+                      ?>     
+                              <option value="<?php echo $row['NOM_EDITEUR']; ?>"><?php echo $row['NOM_EDITEUR']; ?></option>
+                        <?php
+                        }}}
+                        ?>
+                  </select>
+                </div>
+                <div class="col-4 <?php echo (!empty($genre_err)) ? 'has-error' : ''; ?>">
+                  <label class="form-label">Genre</label>
+                  <select name="genre" id="genre" class="form-control" required>
+                    <option value="">Liste des genres :</option>
+                      <?php
+                        require_once "config_anas.php";
+                                  
+                        $sql = "SELECT * FROM genre";
 
-                    if ($result = $link->query($sql)) {						
-                      if($result){
-                        foreach ($link->query($sql) as $row) {
-                  ?>     
-                          <option value="<?php echo $row['LIBELLE_GENRE']; ?>"><?php echo $row['LIBELLE_GENRE']; ?></option>
-                    <?php
-                    }}}
-                    ?>
-              </select>
-            </div>
-          </div>
-          <br>
-					<div class="text-center">
-					  <input type="hidden" name="id" value="<?php echo $id; ?>"/>
-					  <a href="consulter_livre.php" class="btn btn-danger" style="margin-top:30px">Cancel</a>
-					  <button type="reset" class="btn btn-secondary" style="margin-top:30px">Reset</button>
-					  <button type="submit" class="btn btn-primary" style="margin-top:30px">Submit</button>
-					</div>
-				</form>
+                        if ($result = $link->query($sql)) {						
+                          if($result){
+                            foreach ($link->query($sql) as $row) {
+                      ?>     
+                              <option value="<?php echo $row['LIBELLE_GENRE']; ?>"><?php echo $row['LIBELLE_GENRE']; ?></option>
+                        <?php
+                        }}}
+                        ?>
+                  </select>
+                </div>
+                <div class="text-center">
+                  <a href="consulter_livre.php" class="btn btn-danger" style="margin-top:30px">Cancel</a>
+                  <button type="reset" class="btn btn-secondary" style="margin-top:30px">Reset</button>
+                  <button type="submit" class="btn btn-primary" style="margin-top:30px">Submit</button>
+                </div>
+              </form>
 
             </div>
-          </div>
-		  
+          </div>  
         </div>
-		<div class="col-lg-1"></div>
-		
+        <div class="col-lg-1"></div>
       </div>
     </section>
 
