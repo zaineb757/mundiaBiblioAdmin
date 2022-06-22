@@ -1,3 +1,45 @@
+CREATE SEQUENCE auteur_seq START WITH 1;
+
+create table auteur(
+	id_auteur Number(10) not null,
+	nom_auteur Varchar(20)
+);
+
+ALTER TABLE auteur ADD (
+  CONSTRAINT auteur_pk PRIMARY KEY (id_auteur)
+);
+
+
+
+
+CREATE SEQUENCE editeur_seq START WITH 1;
+
+create table editeur(
+	id_editeur Number(10) not null,
+	nom_editeur Varchar(20)
+);
+
+ALTER TABLE editeur ADD (
+  CONSTRAINT editeur_pk PRIMARY KEY (id_editeur)
+);
+
+
+
+
+CREATE SEQUENCE genre_seq START WITH 1;
+
+create table genre(
+	id_genre Number(10) not null,
+	libelle_genre Varchar(20)
+);
+
+ALTER TABLE genre ADD (
+  CONSTRAINT genre_pk PRIMARY KEY (id_genre)
+);
+
+
+
+
 CREATE SEQUENCE livre_seq START WITH 1;
 
 create table livre(
