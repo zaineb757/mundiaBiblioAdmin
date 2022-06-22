@@ -70,7 +70,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($titre_livre_err) && empty($code_catalogue_err) && empty($code_rayon_err) && empty($exemplaires_err) && empty($auteur_err) && empty($editeur_err) && empty($genre_err)){
         // Prepare an insert statement
 		
-        $sql = "INSERT INTO livre VALUES (livre_seq.nextval, '$titre_livre', '$code_catalogue', '$code_rayon','$exemplaires', '$auteur','$editeur','$genre')";
+        $sql = "INSERT INTO livre VALUES (livre_seq.nextval, '$titre_livre', '$code_catalogue', '$code_rayon', '$exemplaires', '$exemplaires', '$auteur','$editeur','$genre')";
         //$sql = "INSERT INTO livre VALUES (3, 'book3', 'cat3', 'ray3', 1,1,1,1)";
          
         //if($stmt = mysqli_prepare($link, $sql)){

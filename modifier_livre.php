@@ -3,8 +3,8 @@
 require_once "config_anas.php";
  
 // Define variables and initialize with empty values
-$titre_livre = $code_catalogue = $code_rayon = $exemplaires = $auteur = $editeur = $genre = "";
-$titre_livre_err = $code_catalogue_err = $code_rayon_err = $exemplaires_err = $auteur_err = $editeur_err = $genre_err ="";
+$titre_livre = $code_catalogue = $code_rayon = $exemplaires = $stock = $auteur = $editeur = $genre = "";
+$titre_livre_err = $code_catalogue_err = $code_rayon_err = $exemplaires_err = $stock_err = $auteur_err = $editeur_err = $genre_err ="";
  
 // Processing form data when form is submitted
 if(isset($_POST["id"]) && !empty($_POST["id"])){
@@ -43,6 +43,14 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         $exemplaires = $input_exemplaires;
     }
 
+    // Validate stock
+    $input_stock = trim($_POST["stock"]);
+    if(empty($input_stock)){
+        $stock_err = "Saisir le nombre en stock !";     
+    } else{
+        $stock = $input_stock;
+    }
+
     // Validate auteur
     $input_auteur = trim($_POST["auteur"]);
     if(empty($input_auteur)){
@@ -70,9 +78,9 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
   
     
     // Check input errors before inserting in database
-    if(empty($titre_livre_err) && empty($code_catalogue_err) && empty($code_rayon_err) && empty($exemplaires_err) && empty($auteur_err) && empty($editeur_err) && empty($genre_err)){
+    if(empty($titre_livre_err) && empty($code_catalogue_err) && empty($code_rayon_err) && empty($exemplaires_err) && empty($stock_err) && empty($auteur_err) && empty($editeur_err) && empty($genre_err)){
         // Prepare an update statement
-        $sql = "UPDATE livre SET titre_livre=?, code_catalogue=?, code_rayon=?, exemplaires='$exemplaires', auteur='$auteur', editeur='$editeur', genre='$genre' WHERE ID_LIVRE='$id' "; 
+        $sql = "UPDATE livre SET titre_livre=?, code_catalogue=?, code_rayon=?, exemplaires='$exemplaires', stock='$stock', auteur='$auteur', editeur='$editeur', genre='$genre' WHERE ID_LIVRE='$id' "; 
          
         //if($stmt = mysqli_prepare($link, $sql)){
         if($stmt = $link->prepare($sql)){
@@ -143,6 +151,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     $code_catalogue = $row["CODE_CATALOGUE"];
                     $code_rayon = $row["CODE_RAYON"];
                     $exemplaires = $row["EXEMPLAIRES"];
+                    $stock = $row["STOCK"];
                     $auteur = $row["AUTEUR"];
                     $editeur = $row["EDITEUR"];
                     $genre = $row["GENRE"];
@@ -699,7 +708,6 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
               <textarea name="titre_livre" class="form-control"><?php echo $titre_livre; ?></textarea>
               <span class="help-block"><?php echo $titre_livre_err;?></span>
             </div>
-            <br>
             <div class="col-6 <?php echo (!empty($code_catalogue_err)) ? 'has-error' : ''; ?>">
               <label class="form-label">Code catalogue</label>
               <textarea name="code_catalogue" class="form-control"><?php echo $code_catalogue; ?></textarea>
@@ -713,11 +721,15 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
               <textarea name="code_rayon" class="form-control"><?php echo $code_rayon; ?></textarea>
               <span class="help-block"><?php echo $code_rayon_err;?></span>
             </div>
-            <br>
-            <div class="col-6 <?php echo (!empty($exemplaires_err)) ? 'has-error' : ''; ?>">
-              <label class="form-label">Nombre d'exemplaires</label>
+            <div class="col-3 <?php echo (!empty($exemplaires_err)) ? 'has-error' : ''; ?>">
+              <label class="form-label">Exemplaires</label>
               <textarea name="exemplaires" class="form-control"><?php echo $exemplaires; ?></textarea>
               <span class="help-block"><?php echo $exemplaires_err;?></span>
+            </div>
+            <div class="col-3 <?php echo (!empty($stock_err)) ? 'has-error' : ''; ?>">
+              <label class="form-label">Stock</label>
+              <textarea name="stock" class="form-control"><?php echo $stock; ?></textarea>
+              <span class="help-block"><?php echo $stock_err;?></span>
             </div>
           </div>
           <br>
@@ -741,7 +753,6 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     ?>
               </select>
             </div>
-            <br>
             <div class="col-4 <?php echo (!empty($editeur_err)) ? 'has-error' : ''; ?>">
               <label class="form-label">Editeur</label>
               <select name="editeur" id="editeur" class="form-control" required>
@@ -761,7 +772,6 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     ?>
               </select>
             </div>
-            <br>
             <div class="col-4 <?php echo (!empty($genre_err)) ? 'has-error' : ''; ?>">
               <label class="form-label">Genre</label>
               <select name="genre" id="genre" class="form-control" required>

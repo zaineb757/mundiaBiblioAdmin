@@ -541,10 +541,11 @@
                               echo "<th scope='col'>TITRE</th>";
                               echo "<th scope='col'>CODE CATALOGUE</th>";
                               echo "<th scope='col'>CODE RAYON</th>";
-                              echo "<th scope='col'>EXEMPLAIRES</th>";
                               echo "<th scope='col'>ACTEUR</th>";
                               echo "<th scope='col'>EDITEUR</th>";
                               echo "<th scope='col'>GENRE</th>";
+                              echo "<th scope='col'>EXEMPLAIRES</th>";
+                              echo "<th scope='col'>STOCK</th>";
                               echo "<th scope='col'>ACTION</th>";
                             echo "</tr>";
                           echo "</thead>";
@@ -557,14 +558,19 @@
                               echo "<td>" . $row['TITRE_LIVRE'] . "</td>";
                               echo "<td>" . $row['CODE_CATALOGUE'] . "</td>";
                               echo "<td>" . $row['CODE_RAYON'] . "</td>";
-                              echo "<td>" . $row['EXEMPLAIRES'] . "</td>";
                               echo "<td>" . $row['AUTEUR'] . "</td>";
                               echo "<td>" . $row['EDITEUR'] . "</td>";
                               echo "<td>" . $row['GENRE'] . "</td>";
+                              echo "<td>" . $row['EXEMPLAIRES'] . "</td>";
+
+                              if($row['STOCK']>0)
+                                echo "<td>" . $row['STOCK'] . "</td>";
+                              else
+                                echo "<td style='color:red;'>" . $row['STOCK'] . "</td>";
             
                               echo "<td>";
-                              echo "<a href='modifier_livre.php?id=". $row['ID_LIVRE'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                              echo "<a href='delete_livre.php?id=". $row['ID_LIVRE'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                              echo "<a style='margin-right:10px;' href='modifier_livre.php?id=". $row['ID_LIVRE'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                              echo "<a style='margin-left:10px;' href='delete_livre.php?id=". $row['ID_LIVRE'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                               echo "</td>";
                             echo "<tr>";  
                           }

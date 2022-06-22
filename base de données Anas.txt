@@ -48,6 +48,7 @@ create table livre(
 	code_catalogue Varchar(20) NOT NULL,
 	code_rayon Varchar(20) NOT NULL,
 	exemplaires Number(20) NOT NULL,
+	stock Number(20) NOT NULL,
 	auteur Varchar(20) NOT NULL,
 	editeur Varchar(20) NOT NULL,
 	genre Varchar(20) NOT NULL
